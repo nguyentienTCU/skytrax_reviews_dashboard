@@ -1,3 +1,5 @@
+A modern British Airways dashboard built with Next.js, featuring interactive data visualizations and a responsive design. The application provides real-time monitoring capabilities with optimized performance. Built using TypeScript, React, and Tailwind CSS.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
