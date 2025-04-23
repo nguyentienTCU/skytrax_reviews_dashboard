@@ -41,13 +41,11 @@ JOIN british_airways_db.marts.dim_aircraft a ON f.aircraft_id = a.aircraft_id \
 WHERE f.date_submitted_id IS NOT NULL
     `);
 
-    console.log("check here 2");
-
     // Convert to CSV
     const csvContent = convertToCSV(data);
 
-    // Upload to Google Cloud Storage
-    const fileName = `reviews_${new Date().toISOString().split("T")[0]}.csv`;
+    // Upload to Google Cloud Storage with consistent filename
+    const fileName = "reviews.csv"; // Consistent filename for weekly overwrite
     const publicUrl = await uploadCSVToGCS(csvContent, fileName);
 
     return {
