@@ -1,4 +1,5 @@
 import React from "react";
+import BarGraph from "../custom-ui/BarGraph";
 
 const RouteAnalysis = () => {
   return (
@@ -10,7 +11,17 @@ const RouteAnalysis = () => {
             Top Origin Cities
           </h3>
           <div className="chart-container h-80">
-            <canvas id="originCityChart"></canvas>
+            <BarGraph
+              valueLabels={['London', 'New York', 'Dubai', 'Singapore', 'Tokyo', 'Paris']}
+              values={[280, 240, 210, 180, 150, 130]}
+              xTitle="Number of Reviews"
+              yTitle="City"
+              title="Reviews by Origin City"
+              backgroundColor={['rgba(153, 102, 255, 0.7)']}
+              borderColor={['rgb(153, 102, 255)']}
+              borderWidth={1}
+              axis="y"
+            />
           </div>
         </div>
         <div>
@@ -18,7 +29,17 @@ const RouteAnalysis = () => {
             Top Destination Cities
           </h3>
           <div className="chart-container h-80">
-            <canvas id="destinationCityChart"></canvas>
+            <BarGraph
+              valueLabels={['New York', 'London', 'Paris', 'Dubai', 'Singapore', 'Tokyo']}
+              values={[260, 230, 200, 190, 170, 140]}
+              xTitle="Number of Reviews"
+              yTitle="City"
+              title="Reviews by Destination City"
+              backgroundColor={['rgba(255, 206, 86, 0.7)']}
+              borderColor={['rgb(255, 206, 86)']}
+              borderWidth={1}
+              axis="y"
+            />
           </div>
         </div>
       </div>
