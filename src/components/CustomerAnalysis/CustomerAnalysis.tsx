@@ -1,6 +1,6 @@
 import React from "react";
-import BarGraph from "../custom-ui/BarGraph";
-import PieGraph from "../custom-ui/PieGraph";
+import BarGraph from "../custom-ui/BarChart";
+import PieGraph from "../custom-ui/PieChart";
 
 const CustomerAnalysis = () => {
 	return (
