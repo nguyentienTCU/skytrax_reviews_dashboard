@@ -1,7 +1,7 @@
 import React from "react";
-import PieChart from "@/components/custom-ui/PieGraph";
+import PieGraph from "@/components/custom-ui/PieChart";
 import DoughnutChart from "@/components/custom-ui/DoughnutChart";
-import BarGraph from "@/components/custom-ui/BarGraph";
+import BarGraph from "@/components/custom-ui/BarChart";
 
 const AircraftAnalysis = () => {
 	return (
@@ -16,7 +16,7 @@ const AircraftAnalysis = () => {
 					</h3>
 					<div className="chart-container h-80">
 						{/* Top Aircraft Manufacturers Pie Chart */}
-						<PieChart
+						<PieGraph
 							valueLabels={[
 								"Boeing",
 								"Airbus",
