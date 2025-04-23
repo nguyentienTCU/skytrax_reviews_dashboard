@@ -1,4 +1,5 @@
 import React from "react";
+import PieGraph from "../custom-ui/PieGraph";
 
 const ReviewTextAnalysis = () => {
   return (
@@ -61,7 +62,24 @@ const ReviewTextAnalysis = () => {
             Sentiment Analysis
           </h3>
           <div className="chart-container h-64">
-            <canvas id="sentimentChart"></canvas>
+            <PieGraph
+              values={[58, 24, 18]}
+              valueLabels={['Positive', 'Neutral', 'Negative']}
+              title="Review Sentiment Analysis (%)"
+              backgroundColor={[
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(255, 206, 86, 0.7)', 
+                'rgba(255, 99, 132, 0.7)'
+              ]}
+              borderColor={[
+                'rgb(75, 192, 192)',
+                'rgb(255, 206, 86)',
+                'rgb(255, 99, 132)'
+              ]}
+              borderWidth={1}
+              height="100%"
+              legendPosition="right"
+            />
           </div>
         </div>
       </div>
