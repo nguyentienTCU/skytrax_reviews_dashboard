@@ -45,13 +45,12 @@ WHERE f.date_submitted_id IS NOT NULL
     const csvContent = convertToCSV(data);
 
     // Upload to Google Cloud Storage with consistent filename
-    const fileName = "reviews.csv"; // Consistent filename for weekly overwrite
-    const publicUrl = await uploadCSVToGCS(csvContent, fileName);
+    const fileName = "reviews.csv";
+    await uploadCSVToGCS(csvContent, fileName);
 
     return {
       success: true,
       message: "Data saved successfully",
-      fileUrl: publicUrl,
     };
   } catch (error) {
     console.error("Error fetching and saving data:", error);

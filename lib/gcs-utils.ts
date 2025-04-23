@@ -19,7 +19,7 @@ const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME || "";
 export async function uploadCSVToGCS(
   csvContent: string,
   fileName: string
-): Promise<string> {
+): Promise<void> {
   try {
     const bucket = storage.bucket(bucketName);
     const file = bucket.file(fileName);
@@ -32,10 +32,7 @@ export async function uploadCSVToGCS(
 
     return new Promise((resolve, reject) => {
       stream.on("error", (err) => reject(err));
-      stream.on("finish", () => {
-        const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-        resolve(publicUrl);
-      });
+      stream.on("finish", () => resolve());
 
       Readable.from(csvContent).pipe(stream);
     });

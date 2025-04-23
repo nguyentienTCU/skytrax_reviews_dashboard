@@ -19,7 +19,6 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       message: "Data updated successfully",
-      fileUrl: result.fileUrl,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
