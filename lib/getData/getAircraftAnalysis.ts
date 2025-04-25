@@ -23,8 +23,12 @@ function getAircraftManufacturersPercentage(reviews: Review[]) {
   // Count reviews for each manufacturer
   reviews.forEach((review) => {
     const manufacturer = review.AIRCRAFT_MANUFACTURER;
-    manufacturerCounts[manufacturer] =
-      (manufacturerCounts[manufacturer] || 0) + 1;
+    if (manufacturer) {
+      manufacturerCounts[manufacturer] =
+        (manufacturerCounts[manufacturer] || 0) + 1;
+    } else {
+      manufacturerCounts["Unknown"] = (manufacturerCounts["Unknown"] || 0) + 1;
+    }
   });
 
   // Convert to array and sort by count
@@ -32,7 +36,7 @@ function getAircraftManufacturersPercentage(reviews: Review[]) {
     .map(([manufacturer, count]) => ({
       manufacturer,
       count,
-      percentage: (count / totalReviews) * 100,
+      percentage: Math.round((count / totalReviews) * 100),
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -47,7 +51,7 @@ function getAircraftManufacturersPercentage(reviews: Review[]) {
   } else {
     // Replace the last manufacturer with "Unknown"
     const unknownCount = manufacturerCounts["Unknown"] || 0;
-    const unknownPercentage = (unknownCount / totalReviews) * 100;
+    const unknownPercentage = Math.round((unknownCount / totalReviews) * 100);
 
     return [
       ...topManufacturers.slice(0, 4),
@@ -87,6 +91,7 @@ function getAircraftSeatTypePercentage(reviews: Review[]) {
     "Business Class",
     "First Class",
     "Premium Economy",
+    "Unknown",
   ];
 
   // Initialize counts for target seat types
@@ -97,14 +102,18 @@ function getAircraftSeatTypePercentage(reviews: Review[]) {
   // Count reviews for each seat type
   reviews.forEach((review) => {
     const seatType = review.SEAT_TYPE;
-    if (targetSeatTypes.includes(seatType)) {
+    if (seatType && targetSeatTypes.includes(seatType)) {
       seatTypeCounts[seatType] = (seatTypeCounts[seatType] || 0) + 1;
+    } else {
+      seatTypeCounts["Unknown"] = (seatTypeCounts["Unknown"] || 0) + 1;
     }
   });
 
-  // Convert to array with percentages
-  return targetSeatTypes.map((seatType) => ({
-    seatType,
-    percentage: (seatTypeCounts[seatType] / totalReviews) * 100,
-  }));
+  // Convert to array with percentages, filtering out Unknown if count is 0
+  return targetSeatTypes
+    .filter((type) => type !== "Unknown" || seatTypeCounts[type] > 0)
+    .map((seatType) => ({
+      seatType,
+      percentage: Math.round((seatTypeCounts[seatType] / totalReviews) * 100),
+    }));
 }
