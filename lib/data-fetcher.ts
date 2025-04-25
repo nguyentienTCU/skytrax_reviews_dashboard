@@ -30,7 +30,8 @@ export async function fetchAndSaveData() {
     dl.city AS destination_city, \
     dl.airport AS destination_airport, \
     tl.city AS transit_city, \
-    tl.airport AS transit_airport \
+    tl.airport AS transit_airport, \
+    f.review_text AS review_text \
 FROM british_airways_db.marts.fct_review f \
 JOIN british_airways_db.marts.dim_date d ON f.date_submitted_id = d.date_id \
 JOIN british_airways_db.marts.dim_customer c ON f.customer_id = c.customer_id \
@@ -68,9 +69,16 @@ function convertToCSV(data: any[]): string {
   const csvRows = [
     headers.join(","), // Header row
     ...data.map((row) =>
-      headers.map((header) => JSON.stringify(row[header])).join(",")
+      headers.map((header) => escapeForCSV(row[header])).join(",")
     ),
   ];
 
   return csvRows.join("\n");
+}
+
+function escapeForCSV(value: any): string {
+  const str = String(value ?? ""); // Convert null/undefined to empty string
+  const needsQuotes = /[",\n]/.test(str);
+  const escaped = str.replace(/"/g, '""'); // Escape quotes with double quotes
+  return needsQuotes ? `"${escaped}"` : escaped;
 }

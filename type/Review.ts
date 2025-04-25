@@ -1,0 +1,26 @@
+export type Review = {
+  REVIEW_ID: number;
+  REVIEW_DATE_ID: string;
+  REVIEW_DAY_OF_WEEK: string;
+  REVIEW_MONTH_NAME: string;
+  REVIEW_MONTH_NUMBER: number;
+  REVIEW_YEAR: number;
+  REVIEW_VERIFIED: boolean;
+  CUSTOMER_NAME: string;
+  FLIGHT_MONTH_NAME: string;
+  FLIGHT_MONTH_NUMBER: number;
+  FLIGHT_YEAR: number;
+  FLIGHT_MONTH_YEAR: string;
+  CUSTOMER_COUNTRY: string;
+  AIRCRAFT_MODEL: string;
+  AIRCRAFT_MANUFACTURER: string;
+  AIRCRAFT_SEAT_CAPACITY: number;
+  REVIEW_SEAT_TYPE: string;
+  ORIGIN_CITY: string;
+  ORIGIN_AIRPORT: string;
+  DESTINATION_CITY: string;
+  DESTINATION_AIRPORT: string;
+  TRANSIT_CITY: string;
+  TRANSIT_AIRPORT: string;
+  REVIEW_TEXT: string;
+};
