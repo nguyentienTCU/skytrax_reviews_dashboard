@@ -19,7 +19,7 @@ function getReviewsByCountry(reviews: Review[]) {
 
   // Count reviews for each country
   reviews.forEach((review) => {
-    const country = review.CUSTOMER_COUNTRY;
+    const country = review.NATIONALITY;
     countryCounts[country] = (countryCounts[country] || 0) + 1;
   });
 
@@ -35,9 +35,7 @@ function getReviewsByCountry(reviews: Review[]) {
 
 function getVerifiedAndUnverifiedReviews(reviews: Review[]) {
   const totalReviews = reviews.length;
-  const verifiedCount = reviews.filter(
-    (review) => review.REVIEW_VERIFIED
-  ).length;
+  const verifiedCount = reviews.filter((review) => review.VERIFIED).length;
   const verifiedPercentage = Math.round((verifiedCount / totalReviews) * 100);
 
   return {
