@@ -20,7 +20,7 @@ function getTotalReviews(data: Review[]) {
 }
 
 function getTotalVerifiedReviews(data: Review[]) {
-  const verifiedCount = data.filter((review) => review.REVIEW_VERIFIED).length;
+  const verifiedCount = data.filter((review) => review.VERIFIED).length;
   return Math.round((verifiedCount / data.length) * 100);
 }
 
@@ -29,5 +29,5 @@ function getTotalAircraftModels(data: Review[]) {
 }
 
 function getTotalCountries(data: Review[]) {
-  return new Set(data.map((review) => review.CUSTOMER_COUNTRY)).size;
+  return new Set(data.map((review) => review.NATIONALITY)).size;
 }

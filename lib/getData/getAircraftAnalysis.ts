@@ -96,7 +96,7 @@ function getAircraftSeatTypePercentage(reviews: Review[]) {
 
   // Count reviews for each seat type
   reviews.forEach((review) => {
-    const seatType = review.REVIEW_SEAT_TYPE;
+    const seatType = review.SEAT_TYPE;
     if (targetSeatTypes.includes(seatType)) {
       seatTypeCounts[seatType] = (seatTypeCounts[seatType] || 0) + 1;
     }

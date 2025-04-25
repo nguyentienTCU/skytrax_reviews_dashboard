@@ -19,7 +19,7 @@ function getReviewsOverTime(reviews: Review[]) {
   const yearCounts: { [key: number]: number } = {};
 
   reviews.forEach((review) => {
-    const year = review.REVIEW_YEAR;
+    const year = review.REVIEW_CAL_YEAR;
     yearCounts[year] = (yearCounts[year] || 0) + 1;
   });
 
@@ -42,7 +42,7 @@ function getReviewsByDayOfWeek(reviews: Review[]) {
 
   // Count reviews for each day
   reviews.forEach((review) => {
-    const day = review.REVIEW_DAY_OF_WEEK;
+    const day = review.REVIEW_DAY_OF_WEEK_NAME;
     dayCounts[day] = (dayCounts[day] || 0) + 1;
   });
 
@@ -77,7 +77,7 @@ function getReviewsByMonth(reviews: Review[]) {
 
   // Count reviews for each month
   reviews.forEach((review) => {
-    const month = review.REVIEW_MONTH_NAME;
+    const month = review.REVIEW_CAL_MON_NAME;
     monthCounts[month] = (monthCounts[month] || 0) + 1;
   });
 
