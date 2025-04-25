@@ -1,14 +1,14 @@
 export type Review = {
   REVIEW_ID: number;
   CUSTOMER_NAME: string;
-  NATIONALITY: string;
-  NUMBER_OF_FLIGHTS: number;
+  NATIONALITY: string | null;
+  NUMBER_OF_FLIGHTS: number | null;
   DATE_SUBMITTED_ID: string;
   REVIEW_DAY_OF_WEEK_NAME: string;
   REVIEW_CAL_MONTH: number;
   REVIEW_CAL_MON_NAME: string;
   REVIEW_CAL_YEAR: number;
-  DATE_FLOWN_ID: string;
+  DATE_FLOWN_ID: string | null;
   ORIGIN_LOCATION_ID: number;
   ORIGIN_CITY: string;
   ORIGIN_AIRPORT: string;
@@ -20,11 +20,11 @@ export type Review = {
   TRANSIT_AIRPORT: string;
   AIRCRAFT_ID: number;
   AIRCRAFT_MODEL: string;
-  AIRCRAFT_MANUFACTURER: string;
+  AIRCRAFT_MANUFACTURER: string | null;
   SEAT_CAPACITY: number | null;
-  VERIFIED: boolean;
-  SEAT_TYPE: string;
-  TYPE_OF_TRAVELLER: string;
+  VERIFIED: boolean | null;
+  SEAT_TYPE: string | null;
+  TYPE_OF_TRAVELLER: string | null;
   SEAT_COMFORT: number | null;
   CABIN_STAFF_SERVICE: number | null;
   FOOD_AND_BEVERAGES: number | null;
@@ -33,9 +33,9 @@ export type Review = {
   WIFI_AND_CONNECTIVITY: number | null;
   VALUE_FOR_MONEY: number | null;
   AVERAGE_RATING: number | null;
-  RATING_BAND: string | null;
+  RATING_BAND: string;
   RECOMMENDED: boolean | null;
-  REVIEW_TEXT: string;
+  REVIEW_TEXT: string | null;
   EL_UPDATED_AT: string;
   T_UPDATED_AT: string;
 };

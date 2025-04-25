@@ -20,7 +20,9 @@ function getReviewsByCountry(reviews: Review[]) {
   // Count reviews for each country
   reviews.forEach((review) => {
     const country = review.NATIONALITY;
-    countryCounts[country] = (countryCounts[country] || 0) + 1;
+    if (country) {
+      countryCounts[country] = (countryCounts[country] || 0) + 1;
+    }
   });
 
   // Convert to array, sort by count, and take top 7
