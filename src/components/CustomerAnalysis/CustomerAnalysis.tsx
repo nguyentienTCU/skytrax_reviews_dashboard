@@ -1,8 +1,10 @@
 import React from "react";
 import BarGraph from "../custom-ui/BarChart";
 import PieGraph from "../custom-ui/PieChart";
+import { getCustomerAnalysis } from "@/lib/getData/getCustomerAnalysis";
 
-const CustomerAnalysis = () => {
+const CustomerAnalysis = async () => {
+	const { reviewsByCountry, verifiedAndUnverifiedReviews } = await getCustomerAnalysis();
 	return (
 		<div className="card">
 			<h2 className="text-xl font-bold mb-4 text-gray-700">
@@ -15,16 +17,8 @@ const CustomerAnalysis = () => {
 					</h3>
 					<div className="chart-container h-full">
 						<BarGraph
-							values={[580, 460, 340, 320, 280, 240, 210]}
-							valueLabels={[
-								"USA",
-								"UK",
-								"Australia",
-								"Germany",
-								"Canada",
-								"France",
-								"Japan",
-							]}
+							values={reviewsByCountry.map((review) => review.count)}
+							valueLabels={reviewsByCountry.map((review) => review.country)}
 							title="Reviews by Customer Country"
 							backgroundColor={["rgba(255, 99, 132, 0.7)"]}
 							borderColor={["rgb(255, 99, 132)"]}
@@ -40,7 +34,7 @@ const CustomerAnalysis = () => {
 					</h3>
 					<div className="chart-container h-full">
 						<PieGraph
-							values={[78, 22]}
+							values={[verifiedAndUnverifiedReviews.verified, verifiedAndUnverifiedReviews.unverified]}
 							valueLabels={["Verified", "Unverified"]}
 							title="Verified vs Unverified Reviews (%)"
 							backgroundColor={[

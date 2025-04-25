@@ -1,7 +1,9 @@
 import React from "react";
 import BarGraph from "../custom-ui/BarChart";
+import { getRouteAnalysis } from "../../../lib/getData/getRouteAnalysis";
 
-const RouteAnalysis = () => {
+const RouteAnalysis = async () => {
+	const { topOriginCities, topDestinationCities } = await getRouteAnalysis();
 	return (
 		<div className="card">
 			<h2 className="text-xl font-bold mb-4 text-gray-700">Route Analysis</h2>
@@ -12,15 +14,8 @@ const RouteAnalysis = () => {
 					</h3>
 					<div className="chart-container h-80">
 						<BarGraph
-							valueLabels={[
-								"London",
-								"New York",
-								"Dubai",
-								"Singapore",
-								"Tokyo",
-								"Paris",
-							]}
-							values={[280, 240, 210, 180, 150, 130]}
+							valueLabels={topOriginCities.map((city) => city.city)}
+							values={topOriginCities.map((city) => city.count)}
 							xTitle="Number of Reviews"
 							yTitle="City"
 							title="Reviews by Origin City"
@@ -37,15 +32,8 @@ const RouteAnalysis = () => {
 					</h3>
 					<div className="chart-container h-80">
 						<BarGraph
-							valueLabels={[
-								"New York",
-								"London",
-								"Paris",
-								"Dubai",
-								"Singapore",
-								"Tokyo",
-							]}
-							values={[260, 230, 200, 190, 170, 140]}
+							valueLabels={topDestinationCities.map((city) => city.city)}
+							values={topDestinationCities.map((city) => city.count)}
 							xTitle="Number of Reviews"
 							yTitle="City"
 							title="Reviews by Destination City"
