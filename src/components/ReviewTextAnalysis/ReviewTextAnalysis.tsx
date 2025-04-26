@@ -1,7 +1,10 @@
 import React from "react";
 import PieGraph from "@/components/custom-ui/PieChart";
 
-const ReviewTextAnalysis = () => {
+import { getReviewTextAnalysis } from "@/lib/getData/getReviewTextAnalysis";
+
+const ReviewTextAnalysis = async () => {
+	const { sampleReviews, ratingBandsTypeCount } = await getReviewTextAnalysis();
 	return (
 		<div className="card">
 			<h2 className="text-xl font-bold mb-4 text-gray-700">
@@ -63,7 +66,7 @@ const ReviewTextAnalysis = () => {
 					</h3>
 					<div className="chart-container h-64">
 						<PieGraph
-							values={[58, 24, 18]}
+							values={ratingBandsTypeCount}
 							valueLabels={["Positive", "Neutral", "Negative"]}
 							title="Review Sentiment Analysis (%)"
 							backgroundColor={[
@@ -90,58 +93,67 @@ const ReviewTextAnalysis = () => {
 				<div className="space-y-4">
 					<div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">Excellent flight experience</span>
+							<span className="font-semibold text-black">Good Review</span>
 							<div>
-								<span className="text-yellow-500">★★★★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.good.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.good.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
-							"The business class on the A380 was exceptional. Great service,
-							comfortable seats that convert to full-flat beds, and the food was
-							restaurant quality. Will definitely fly with them again."
+							{sampleReviews.good.reviewText}
 						</p>
 						<div className="flex justify-between mt-2 text-sm text-gray-500">
-							<span>Boeing 777 • Business Class</span>
-							<span>London → Singapore</span>
+							<span>
+								{sampleReviews.good.aircraftModel} •{" "}
+								{sampleReviews.good.seatType}
+							</span>
+							<span>
+								{sampleReviews.good.originCity} → {sampleReviews.good.destinationCity}
+							</span>
 						</div>
 					</div>
 					<div className="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">
-								Average experience with delays
+							<span className="font-semibold text-black">
+								Medium Review
 							</span>
 							<div>
-								<span className="text-yellow-500">★★★</span>
-								<span className="text-gray-300">★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.medium.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.medium.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
-							"Flight was delayed by 2 hours with minimal communication. Once on
-							board, the service was decent and seats were comfortable enough
-							for economy. Food was better than expected."
+							{sampleReviews.medium.reviewText}
 						</p>
 						<div className="flex justify-between mt-2 text-sm text-gray-500">
-							<span>Airbus A320 • Economy Class</span>
-							<span>Paris → Rome</span>
+							<span>
+								{sampleReviews.medium.aircraftModel} •{" "}
+								{sampleReviews.medium.seatType}
+							</span>
+							<span>
+								{sampleReviews.medium.originCity} → {sampleReviews.medium.destinationCity}
+							</span>
 						</div>
 					</div>
 					<div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">Disappointing service</span>
+							<span className="font-semibold text-black">Bad Review</span>
 							<div>
-								<span className="text-yellow-500">★</span>
-								<span className="text-gray-300">★★★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.bad.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.bad.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
-							"Terrible experience from start to finish. Flight was overbooked,
-							we were downgraded from premium economy to regular economy with no
-							compensation. Staff were rude and unhelpful when we raised
-							concerns."
+							{sampleReviews.bad.reviewText}
 						</p>
 						<div className="flex justify-between mt-2 text-sm text-gray-500">
-							<span>Boeing 787 • Economy Class</span>
-							<span>New York → Chicago</span>
+							<span>
+								{sampleReviews.bad.aircraftModel} •{" "}
+								{sampleReviews.bad.seatType}
+							</span>
+							<span>
+								{sampleReviews.bad.originCity} → {sampleReviews.bad.destinationCity}
+							</span>
 						</div>
 					</div>
 				</div>

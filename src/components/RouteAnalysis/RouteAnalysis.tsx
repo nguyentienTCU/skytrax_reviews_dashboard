@@ -1,9 +1,10 @@
 import React from "react";
 import BarGraph from "../custom-ui/BarChart";
-import { getRouteAnalysis } from "../../../lib/getData/getRouteAnalysis";
+import { getRouteAnalysis } from "@/lib/getData/getRouteAnalysis";
 
 const RouteAnalysis = async () => {
-	const { topOriginCities, topDestinationCities } = await getRouteAnalysis();
+	const { topOriginCities, topDestinationCities, topRoutes } =
+		await getRouteAnalysis();
 	return (
 		<div className="card">
 			<h2 className="text-xl font-bold mb-4 text-gray-700">Route Analysis</h2>
@@ -68,69 +69,32 @@ const RouteAnalysis = async () => {
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td className="py-2 px-4 border-b border-gray-200">London</td>
-								<td className="py-2 px-4 border-b border-gray-200">New York</td>
-								<td className="py-2 px-4 border-b border-gray-200">142</td>
-								<td className="py-2 px-4 border-b border-gray-200">
-									<div className="flex items-center">
-										<span className="text-yellow-500">★★★★</span>
-										<span className="text-gray-300">★</span>
-										<span className="ml-1">4.1</span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td className="py-2 px-4 border-b border-gray-200">Dubai</td>
-								<td className="py-2 px-4 border-b border-gray-200">London</td>
-								<td className="py-2 px-4 border-b border-gray-200">118</td>
-								<td className="py-2 px-4 border-b border-gray-200">
-									<div className="flex items-center">
-										<span className="text-yellow-500">★★★★</span>
-										<span className="text-gray-300">★</span>
-										<span className="ml-1">4.3</span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td className="py-2 px-4 border-b border-gray-200">
-									Singapore
-								</td>
-								<td className="py-2 px-4 border-b border-gray-200">Sydney</td>
-								<td className="py-2 px-4 border-b border-gray-200">98</td>
-								<td className="py-2 px-4 border-b border-gray-200">
-									<div className="flex items-center">
-										<span className="text-yellow-500">★★★★★</span>
-										<span className="ml-1">4.7</span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td className="py-2 px-4 border-b border-gray-200">
-									Hong Kong
-								</td>
-								<td className="py-2 px-4 border-b border-gray-200">Tokyo</td>
-								<td className="py-2 px-4 border-b border-gray-200">87</td>
-								<td className="py-2 px-4 border-b border-gray-200">
-									<div className="flex items-center">
-										<span className="text-yellow-500">★★★★</span>
-										<span className="text-gray-300">★</span>
-										<span className="ml-1">3.9</span>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td className="py-2 px-4 border-b border-gray-200">Paris</td>
-								<td className="py-2 px-4 border-b border-gray-200">Rome</td>
-								<td className="py-2 px-4 border-b border-gray-200">79</td>
-								<td className="py-2 px-4 border-b border-gray-200">
-									<div className="flex items-center">
-										<span className="text-yellow-500">★★★</span>
-										<span className="text-gray-300">★★</span>
-										<span className="ml-1">3.5</span>
-									</div>
-								</td>
-							</tr>
+							{topRoutes.map((route, index) => (
+								<tr key={index}>
+									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+										{route.origin}
+									</td>
+									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+										{route.destination}
+									</td>
+									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+										{route.count}
+									</td>
+									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+										<div className="flex items-center">
+											<span className="text-yellow-500">
+												{"★".repeat(Math.floor(route.averageRating))}
+											</span>
+											<span className="text-gray-200">
+												{"★".repeat(5 - Math.floor(route.averageRating))}
+											</span>
+											<span className="ml-1">
+												{route.averageRating.toFixed(1)}
+											</span>
+										</div>
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
