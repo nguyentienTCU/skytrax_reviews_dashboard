@@ -93,9 +93,10 @@ const ReviewTextAnalysis = async () => {
 				<div className="space-y-4">
 					<div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">Excellent flight experience</span>
+							<span className="font-semibold text-black">Good Review</span>
 							<div>
-								<span className="text-yellow-500">★★★★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.good.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.good.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
@@ -113,12 +114,12 @@ const ReviewTextAnalysis = async () => {
 					</div>
 					<div className="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">
-								Average experience with delays
+							<span className="font-semibold text-black">
+								Medium Review
 							</span>
 							<div>
-								<span className="text-yellow-500">★★★</span>
-								<span className="text-gray-300">★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.medium.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.medium.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
@@ -136,10 +137,10 @@ const ReviewTextAnalysis = async () => {
 					</div>
 					<div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
 						<div className="flex justify-between">
-							<span className="font-semibold">Disappointing service</span>
+							<span className="font-semibold text-black">Bad Review</span>
 							<div>
-								<span className="text-yellow-500">★</span>
-								<span className="text-gray-300">★★★★</span>
+								<span className="text-yellow-500">{"★".repeat(Math.round(sampleReviews.bad.averageRating))}</span>
+								<span className="text-gray-300">{"★".repeat(5 - Math.round(sampleReviews.bad.averageRating))}</span>
 							</div>
 						</div>
 						<p className="text-gray-700 mt-2">
