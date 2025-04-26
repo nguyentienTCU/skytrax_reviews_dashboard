@@ -29,7 +29,7 @@ const DataSummary = async () => {
             <div>
               <p className="text-sm text-gray-600">Verified Reviews</p>
               <h3 className="text-2xl font-bold text-green-600">
-                {totalVerifiedReviews}%
+                {totalVerifiedReviews.toFixed(2)}%
               </h3>
             </div>
             <div className="bg-green-200 p-3 rounded-full">
