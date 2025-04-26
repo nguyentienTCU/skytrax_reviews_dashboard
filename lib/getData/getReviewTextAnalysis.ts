@@ -22,7 +22,7 @@ function getSampleReviews(reviews: Review[]) {
 			destinationCity: string;
 			aircraftModel: string;
 			seatType: string;
-			averageRating:  number;
+			averageRating: number;
 		};
 	} = {};
 	sampleReviews["bad"] = {
@@ -47,20 +47,26 @@ function getSampleReviews(reviews: Review[]) {
 		destinationCity: "",
 		aircraftModel: "",
 		seatType: "",
-        averageRating: 0,
+		averageRating: 0,
 	};
 
 	for (const review of reviews) {
 		const ratingBand = review.RATING_BAND.toLowerCase();
 		if (
 			sampleReviews[ratingBand].reviewText === "" &&
-			review.REVIEW_TEXT && review.REVIEW_TEXT !== "Unknown" &&
-			review.ORIGIN_CITY && review.ORIGIN_CITY !== "Unknown" &&
-			review.DESTINATION_CITY && review.DESTINATION_CITY !== "Unknown" &&
-			review.AIRCRAFT_MODEL && review.AIRCRAFT_MODEL !== "Unknown" &&
-			review.SEAT_TYPE && review.SEAT_TYPE !== "Unknown" &&
-			review.RATING_BAND && review.RATING_BAND !== "Unknown" &&
-            review.AVERAGE_RATING
+			review.REVIEW_TEXT &&
+			review.REVIEW_TEXT !== "Unknown" &&
+			review.ORIGIN_CITY &&
+			review.ORIGIN_CITY !== "Unknown" &&
+			review.DESTINATION_CITY &&
+			review.DESTINATION_CITY !== "Unknown" &&
+			review.AIRCRAFT_MODEL &&
+			review.AIRCRAFT_MODEL !== "Unknown" &&
+			review.SEAT_TYPE &&
+			review.SEAT_TYPE !== "Unknown" &&
+			review.RATING_BAND &&
+			review.RATING_BAND !== "Unknown" &&
+			review.AVERAGE_RATING
 		) {
 			sampleReviews[ratingBand] = {
 				reviewText: review.REVIEW_TEXT,
