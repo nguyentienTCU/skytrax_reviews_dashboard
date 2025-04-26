@@ -92,14 +92,12 @@ function getSampleReviews(reviews: Review[]) {
 }
 
 function getRatingBandsTypeCount(reviews: Review[]) {
+	const totalReviews = reviews.length;
 	// good, medium, bad
 	const ratingBandsType: number[] = [
-		reviews.filter((review) => review.RATING_BAND.toLowerCase() === "bad")
-			.length,
-		reviews.filter((review) => review.RATING_BAND.toLowerCase() === "medium")
-			.length,
-		reviews.filter((review) => review.RATING_BAND.toLowerCase() === "good")
-			.length,
+		(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "bad").length / totalReviews) * 100,
+		(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "medium").length / totalReviews) * 100,
+		(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "good").length / totalReviews) * 100,
 	];
 
 	return ratingBandsType;
