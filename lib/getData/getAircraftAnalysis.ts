@@ -2,118 +2,118 @@ import { getChartData } from "../csv-parser";
 import { Review } from "../../type/Review";
 
 export async function getAircraftAnalysis() {
-  try {
-    const reviews = (await getChartData("reviews.csv")) as Review[];
-    return {
-      aircraftManufacturersPercentage:
-        getAircraftManufacturersPercentage(reviews),
-      aircraftModels: getAircraftModels(reviews),
-      aircraftSeatTypePercentage: getAircraftSeatTypePercentage(reviews),
-    };
-  } catch (error) {
-    console.error("Error in aircraft analysis:", error);
-    throw error;
-  }
+	try {
+		const reviews = (await getChartData("reviews.csv")) as Review[];
+		return {
+			aircraftManufacturersPercentage:
+				getAircraftManufacturersPercentage(reviews),
+			aircraftModels: getAircraftModels(reviews),
+			aircraftSeatTypePercentage: getAircraftSeatTypePercentage(reviews),
+		};
+	} catch (error) {
+		console.error("Error in aircraft analysis:", error);
+		throw error;
+	}
 }
 
 function getAircraftManufacturersPercentage(reviews: Review[]) {
-  const manufacturerCounts: { [key: string]: number } = {};
-  const totalReviews = reviews.length;
+	const manufacturerCounts: { [key: string]: number } = {};
+	const totalReviews = reviews.length;
 
-  // Count reviews for each manufacturer
-  reviews.forEach((review) => {
-    const manufacturer = review.AIRCRAFT_MANUFACTURER;
-    if (manufacturer) {
-      manufacturerCounts[manufacturer] =
-        (manufacturerCounts[manufacturer] || 0) + 1;
-    } else {
-      manufacturerCounts["Unknown"] = (manufacturerCounts["Unknown"] || 0) + 1;
-    }
-  });
+	// Count reviews for each manufacturer
+	reviews.forEach((review) => {
+		const manufacturer = review.AIRCRAFT_MANUFACTURER;
+		if (manufacturer) {
+			manufacturerCounts[manufacturer] =
+				(manufacturerCounts[manufacturer] || 0) + 1;
+		} else {
+			manufacturerCounts["Unknown"] = (manufacturerCounts["Unknown"] || 0) + 1;
+		}
+	});
 
-  // Convert to array and sort by count
-  const sortedManufacturers = Object.entries(manufacturerCounts)
-    .map(([manufacturer, count]) => ({
-      manufacturer,
-      count,
-      percentage: Math.round((count / totalReviews) * 100),
-    }))
-    .sort((a, b) => b.count - a.count);
+	// Convert to array and sort by count
+	const sortedManufacturers = Object.entries(manufacturerCounts)
+		.map(([manufacturer, count]) => ({
+			manufacturer,
+			count,
+			percentage: (count / totalReviews) * 100,
+		}))
+		.sort((a, b) => b.count - a.count);
 
-  // Get top 5 manufacturers
-  const topManufacturers = sortedManufacturers.slice(0, 5);
+	// Get top 5 manufacturers
+	const topManufacturers = sortedManufacturers.slice(0, 5);
 
-  // Check if "Unknown" is in top 5
-  const hasUnknown = topManufacturers.some((m) => m.manufacturer === "Unknown");
+	// Check if "Unknown" is in top 5
+	const hasUnknown = topManufacturers.some((m) => m.manufacturer === "Unknown");
 
-  if (hasUnknown) {
-    return topManufacturers;
-  } else {
-    // Replace the last manufacturer with "Unknown"
-    const unknownCount = manufacturerCounts["Unknown"] || 0;
-    const unknownPercentage = Math.round((unknownCount / totalReviews) * 100);
+	if (hasUnknown) {
+		return topManufacturers;
+	} else {
+		// Replace the last manufacturer with "Unknown"
+		const unknownCount = manufacturerCounts["Unknown"] || 0;
+		const unknownPercentage = (unknownCount / totalReviews) * 100;
 
-    return [
-      ...topManufacturers.slice(0, 4),
-      {
-        manufacturer: "Unknown",
-        count: unknownCount,
-        percentage: unknownPercentage,
-      },
-    ];
-  }
+		return [
+			...topManufacturers.slice(0, 4),
+			{
+				manufacturer: "Unknown",
+				count: unknownCount,
+				percentage: unknownPercentage,
+			},
+		];
+	}
 }
 
 function getAircraftModels(reviews: Review[]) {
-  const modelCounts: { [key: string]: number } = {};
+	const modelCounts: { [key: string]: number } = {};
 
-  // Count reviews for each model
-  reviews.forEach((review) => {
-    const model = review.AIRCRAFT_MODEL;
-    modelCounts[model] = (modelCounts[model] || 0) + 1;
-  });
+	// Count reviews for each model
+	reviews.forEach((review) => {
+		const model = review.AIRCRAFT_MODEL;
+		modelCounts[model] = (modelCounts[model] || 0) + 1;
+	});
 
-  // Convert to array, sort by count, and take top 6
-  return Object.entries(modelCounts)
-    .map(([model, count]) => ({
-      model,
-      count,
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 6);
+	// Convert to array, sort by count, and take top 6
+	return Object.entries(modelCounts)
+		.map(([model, count]) => ({
+			model,
+			count,
+		}))
+		.sort((a, b) => b.count - a.count)
+		.slice(0, 6);
 }
 
 function getAircraftSeatTypePercentage(reviews: Review[]) {
-  const seatTypeCounts: { [key: string]: number } = {};
-  const totalReviews = reviews.length;
-  const targetSeatTypes = [
-    "Economy Class",
-    "Business Class",
-    "First Class",
-    "Premium Economy",
-    "Unknown",
-  ];
+	const seatTypeCounts: { [key: string]: number } = {};
+	const totalReviews = reviews.length;
+	const targetSeatTypes = [
+		"Economy Class",
+		"Business Class",
+		"First Class",
+		"Premium Economy",
+		"Unknown",
+	];
 
-  // Initialize counts for target seat types
-  targetSeatTypes.forEach((type) => {
-    seatTypeCounts[type] = 0;
-  });
+	// Initialize counts for target seat types
+	targetSeatTypes.forEach((type) => {
+		seatTypeCounts[type] = 0;
+	});
 
-  // Count reviews for each seat type
-  reviews.forEach((review) => {
-    const seatType = review.SEAT_TYPE;
-    if (seatType && targetSeatTypes.includes(seatType)) {
-      seatTypeCounts[seatType] = (seatTypeCounts[seatType] || 0) + 1;
-    } else {
-      seatTypeCounts["Unknown"] = (seatTypeCounts["Unknown"] || 0) + 1;
-    }
-  });
+	// Count reviews for each seat type
+	reviews.forEach((review) => {
+		const seatType = review.SEAT_TYPE;
+		if (seatType) {
+			seatTypeCounts[seatType] = seatTypeCounts[seatType] + 1;
+		} else {
+			seatTypeCounts["Unknown"] = seatTypeCounts["Unknown"] + 1;
+		}
+	});
 
-  // Convert to array with percentages, filtering out Unknown if count is 0
-  return targetSeatTypes
-    .filter((type) => type !== "Unknown" || seatTypeCounts[type] > 0)
-    .map((seatType) => ({
-      seatType,
-      percentage: Math.round((seatTypeCounts[seatType] / totalReviews) * 100),
-    }));
+	// Convert to array with percentages, filtering out Unknown if count is 0
+	return targetSeatTypes
+		.filter((type) => type !== "Unknown" || seatTypeCounts[type] > 0)
+		.map((seatType) => ({
+			seatType,
+			percentage: (seatTypeCounts[seatType] / totalReviews) * 100,
+		}));
 }
