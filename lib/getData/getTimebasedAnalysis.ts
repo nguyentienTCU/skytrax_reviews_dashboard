@@ -6,8 +6,9 @@ export async function getTimebasedAnalysis() {
     const reviews = (await getChartData("reviews.csv")) as Review[];
     return {
       reviewsOverTime: getReviewsOverTime(reviews),
-      reviewsByDayOfWeek: getReviewsByDayOfWeek(reviews),
-      reviewsByMonth: getReviewsByMonth(reviews),
+      avgRecommendation: getAvgRecommendation(reviews),
+      avgScore: getAvgScore(reviews),
+      avgMoneyValue: getAvgMoneyValue(reviews),
     };
   } catch (error) {
     console.error("Error in time-based analysis:", error);
@@ -31,59 +32,111 @@ function getReviewsOverTime(reviews: Review[]) {
     .sort((a, b) => a.year - b.year);
 }
 
-function getReviewsByDayOfWeek(reviews: Review[]) {
-  const dayCounts: { [key: string]: number } = {};
-  const daysOrder = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+function getAvgRecommendation(reviews: Review[]) {
+  // Group reviews by year
+  const yearGroups: { [key: number]: Review[] } = {};
 
-  // Initialize all days with 0
-  daysOrder.forEach((day) => {
-    dayCounts[day] = 0;
-  });
-
-  // Count reviews for each day
   reviews.forEach((review) => {
-    const day = review.REVIEW_DAY_OF_WEEK_NAME;
-    dayCounts[day] = (dayCounts[day] || 0) + 1;
+    if (review.REVIEW_CAL_YEAR && review.RECOMMENDED !== null) {
+      const year = review.REVIEW_CAL_YEAR;
+      if (!yearGroups[year]) {
+        yearGroups[year] = [];
+      }
+      yearGroups[year].push(review);
+    }
   });
 
-  // Convert to array and maintain day order
-  return daysOrder.map((day) => ({
-    day,
-    count: dayCounts[day],
-  }));
+  // Calculate recommendation percentage for each year
+  const recommendationData: { year: number; percentage: number }[] = [];
+  const sortedYears = Object.keys(yearGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  sortedYears.forEach((year) => {
+    const yearReviews = yearGroups[year];
+    const recommendedCount = yearReviews.filter(
+      (review) => review.RECOMMENDED === true
+    ).length;
+    const percentage = (recommendedCount / yearReviews.length) * 100;
+    recommendationData.push({
+      year,
+      percentage,
+    });
+  });
+
+  return recommendationData;
 }
 
-function getReviewsByMonth(reviews: Review[]) {
-  const monthCounts: { [key: string]: number } = {};
-  const monthsOrder = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+function getAvgScore(reviews: Review[]) {
+  // Group reviews by year
+  const yearGroups: { [key: number]: Review[] } = {};
 
-  // Initialize all months with 0
-  monthsOrder.forEach((month) => {
-    monthCounts[month] = 0;
-  });
-
-  // Count reviews for each month
   reviews.forEach((review) => {
-    const month = review.REVIEW_CAL_MON_NAME;
-    monthCounts[month] = (monthCounts[month] || 0) + 1;
+    if (review.REVIEW_CAL_YEAR && review.AVERAGE_RATING !== null) {
+      const year = review.REVIEW_CAL_YEAR;
+      if (!yearGroups[year]) {
+        yearGroups[year] = [];
+      }
+      yearGroups[year].push(review);
+    }
   });
 
-  // Convert to array and maintain month order
-  return monthsOrder.map((month) => ({
-    month,
-    count: monthCounts[month],
-  }));
+  // Calculate average score for each year
+  const averageScores: { year: number; averageScore: number }[] = [];
+  const sortedYears = Object.keys(yearGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  sortedYears.forEach((year) => {
+    const yearReviews = yearGroups[year];
+    const totalScore = yearReviews.reduce((sum, review) => {
+      if (review.AVERAGE_RATING === null) return sum;
+      return sum + review.AVERAGE_RATING;
+    }, 0);
+
+    const averageScore = totalScore / yearReviews.length;
+    averageScores.push({
+      year,
+      averageScore,
+    });
+  });
+
+  return averageScores;
+}
+
+function getAvgMoneyValue(reviews: Review[]) {
+  // Group reviews by year
+  const yearGroups: { [key: number]: Review[] } = {};
+
+  reviews.forEach((review) => {
+    if (review.REVIEW_CAL_YEAR && review.VALUE_FOR_MONEY !== null) {
+      const year = review.REVIEW_CAL_YEAR;
+      if (!yearGroups[year]) {
+        yearGroups[year] = [];
+      }
+      yearGroups[year].push(review);
+    }
+  });
+
+  // Calculate average value for money for each year
+  const averageMoneyValues: { year: number; averageMoneyValue: number }[] = [];
+  const sortedYears = Object.keys(yearGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  sortedYears.forEach((year) => {
+    const yearReviews = yearGroups[year];
+    const totalMoneyValue = yearReviews.reduce((sum, review) => {
+      if (review.VALUE_FOR_MONEY === null) return sum;
+      return sum + review.VALUE_FOR_MONEY;
+    }, 0);
+
+    const averageMoneyValue = totalMoneyValue / yearReviews.length;
+    averageMoneyValues.push({
+      year,
+      averageMoneyValue,
+    });
+  });
+
+  return averageMoneyValues;
 }
