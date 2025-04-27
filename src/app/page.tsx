@@ -1,6 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import Header from "@/components/custom-ui/Header";
+import DashboardInfoHeader from "@/components/DashboardInfoHeader/DashboardInfoHeader";
+import MonthlyMetrics from "@/components/MonthlyMetrics/MonthlyMetrics";
 import DataSummary from "@/components/DataSummary/DataSummary";
 import TimeAnalysis from "@/components/Time-basedAnalysis/TimeAnalysis";
 import AircraftAnalysis from "@/components/AircraftAnalysis/AircraftAnalysis";
@@ -13,6 +15,8 @@ export default function Home() {
   return (
     <div className="dashboard-container">
       <Header />
+      <DashboardInfoHeader />
+      <MonthlyMetrics />
       <DataSummary />
       <TimeAnalysis />
       <AircraftAnalysis />
