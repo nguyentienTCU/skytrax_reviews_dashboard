@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
 interface FilterOption {
   label: string;
   value: string;
