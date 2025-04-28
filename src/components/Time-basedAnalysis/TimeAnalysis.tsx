@@ -4,59 +4,7 @@ import LineChart from "@/components/custom-ui/LineChart";
 import BarGraph from "@/components/custom-ui/BarChart";
 import FilterSection from "@/components/custom-ui/FilterSection";
 import { LineChartDataset, LineChartYAxis } from "@/type/LineChart";
-import { TimeAnalysisData } from "@/type/TimeAnalysisData";
-// Mock data for different services' ratings
-const serviceRatingsData = {
-  seat_comfort: {
-    "1": [10, 15, 60, 120, 180, 160, 100, 80, 60, 40, 10],
-    "2": [5, 10, 50, 100, 120, 110, 80, 60, 50, 30, 5],
-    "3": [8, 12, 80, 140, 200, 180, 120, 100, 80, 60, 8],
-    "4": [2, 8, 90, 180, 220, 200, 140, 120, 100, 80, 2],
-    "5": [1, 5, 70, 160, 180, 170, 110, 90, 70, 50, 1],
-  },
-  cabin_staff_service: {
-    "1": [8, 12, 50, 100, 150, 140, 90, 70, 50, 30, 8],
-    "2": [4, 8, 40, 80, 100, 90, 60, 40, 30, 20, 4],
-    "3": [10, 15, 70, 130, 180, 160, 110, 90, 70, 50, 10],
-    "4": [3, 10, 80, 160, 200, 180, 130, 110, 90, 70, 3],
-    "5": [2, 6, 60, 140, 160, 150, 100, 80, 60, 40, 2],
-  },
-  food_and_beverages: {
-    "1": [12, 18, 70, 140, 190, 170, 120, 90, 70, 50, 12],
-    "2": [6, 12, 60, 120, 140, 130, 90, 70, 60, 40, 6],
-    "3": [9, 15, 90, 160, 220, 200, 140, 120, 100, 80, 9],
-    "4": [4, 10, 100, 200, 240, 220, 160, 140, 120, 100, 4],
-    "5": [3, 7, 80, 180, 200, 190, 130, 110, 90, 70, 3],
-  },
-  ground_service: {
-    "1": [9, 14, 65, 130, 170, 150, 110, 85, 65, 45, 9],
-    "2": [5, 9, 55, 110, 130, 120, 85, 65, 55, 35, 5],
-    "3": [7, 13, 85, 150, 210, 190, 130, 110, 90, 70, 7],
-    "4": [3, 9, 95, 190, 230, 210, 150, 130, 110, 90, 3],
-    "5": [2, 6, 75, 170, 190, 180, 120, 100, 80, 60, 2],
-  },
-  inflight_entertainment: {
-    "1": [11, 16, 68, 135, 185, 165, 115, 88, 68, 48, 11],
-    "2": [6, 11, 58, 115, 135, 125, 88, 68, 58, 38, 6],
-    "3": [8, 14, 88, 155, 215, 195, 135, 115, 95, 75, 8],
-    "4": [4, 9, 98, 195, 235, 215, 155, 135, 115, 95, 4],
-    "5": [3, 7, 78, 175, 195, 185, 125, 105, 85, 65, 3],
-  },
-  value_for_money: {
-    "1": [13, 19, 72, 145, 195, 175, 125, 95, 75, 55, 13],
-    "2": [7, 13, 62, 125, 145, 135, 95, 75, 65, 45, 7],
-    "3": [10, 16, 92, 165, 225, 205, 145, 125, 105, 85, 10],
-    "4": [5, 11, 102, 205, 245, 225, 165, 145, 125, 105, 5],
-    "5": [4, 8, 82, 185, 205, 195, 135, 115, 95, 75, 4],
-  },
-  wifi_and_connectivity: {
-    "1": [14, 20, 75, 150, 200, 180, 130, 100, 80, 60, 14],
-    "2": [8, 14, 65, 130, 150, 140, 100, 80, 70, 50, 8],
-    "3": [11, 17, 95, 170, 230, 210, 150, 130, 110, 90, 11],
-    "4": [6, 12, 105, 210, 250, 230, 170, 150, 130, 110, 6],
-    "5": [5, 9, 85, 190, 210, 200, 140, 120, 100, 80, 5],
-  },
-};
+import { TimeAnalysisData, ServiceRatings } from "@/type/TimeAnalysisData";
 
 const TimeAnalysis = () => {
   const [data, setData] = useState<TimeAnalysisData>({
@@ -64,6 +12,15 @@ const TimeAnalysis = () => {
     avgRecommendation: [],
     avgScore: [],
     avgMoneyValue: [],
+    allServices: {
+      seat_comfort: {},
+      cabin_staff_service: {},
+      food_and_beverages: {},
+      ground_service: {},
+      inflight_entertainment: {},
+      value_for_money: {},
+      wifi_and_connectivity: {},
+    },
   });
 
   useEffect(() => {
@@ -71,31 +28,23 @@ const TimeAnalysis = () => {
       const response = await fetch("/api/fetchData/fetchTimeAnalysisData");
       const data = await response.json();
       setData(data);
-      console.log(data);
-      console.log("recommendation data", data.avgRecommendation);
-      console.log("score data", data.avgScore);
     };
     fetchData();
   }, []);
 
-  const { reviewsOverTime, avgRecommendation, avgScore, avgMoneyValue } = data;
+  const {
+    reviewsOverTime,
+    avgRecommendation,
+    avgScore,
+    avgMoneyValue,
+    allServices,
+  } = data;
 
-  const [selectedService, setSelectedService] = useState("seat_comfort");
+  const [selectedService, setSelectedService] =
+    useState<string>("seat_comfort");
 
-  // Data for charts
-  const years = [
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-    "2024",
-    "2025",
-  ];
+  // aLL years for charts
+  const allServiceYears = Object.keys(allServices[selectedService]);
 
   // Filter options
   const serviceFilterOptions = [
@@ -233,45 +182,49 @@ const TimeAnalysis = () => {
         </h3>
         <div className="chart-container h-64">
           <BarGraph
-            valueLabels={years}
+            valueLabels={allServiceYears}
             datasets={[
               {
                 label: "1",
-                data: serviceRatingsData[
-                  selectedService as keyof typeof serviceRatingsData
-                ]["1"],
+                data: allServiceYears.map(
+                  (year) =>
+                    allServices[selectedService]?.[parseInt(year)]?.[1] || 0
+                ),
                 backgroundColor: "rgba(255, 99, 132, 0.7)",
                 borderColor: "rgba(255, 99, 132, 0.7)",
               },
               {
                 label: "2",
-                data: serviceRatingsData[
-                  selectedService as keyof typeof serviceRatingsData
-                ]["2"],
+                data: allServiceYears.map(
+                  (year) => allServices[selectedService]?.[parseInt(year)]?.[2] || 0
+                ),
                 backgroundColor: "rgba(255, 206, 86, 0.7)",
                 borderColor: "rgba(255, 206, 86, 0.7)",
               },
               {
                 label: "3",
-                data: serviceRatingsData[
-                  selectedService as keyof typeof serviceRatingsData
-                ]["3"],
+                data: allServiceYears.map(
+                  (year) =>
+                    allServices[selectedService]?.[parseInt(year)]?.[3] || 0
+                ),
                 backgroundColor: "rgba(201, 203, 207, 0.7)",
                 borderColor: "rgba(201, 203, 207, 0.7)",
               },
               {
                 label: "4",
-                data: serviceRatingsData[
-                  selectedService as keyof typeof serviceRatingsData
-                ]["4"],
+                data: allServiceYears.map(
+                  (year) =>
+                    allServices[selectedService]?.[parseInt(year)]?.[4] || 0
+                ),
                 backgroundColor: "rgba(75, 192, 192, 0.7)",
                 borderColor: "rgba(75, 192, 192, 0.7)",
               },
               {
                 label: "5",
-                data: serviceRatingsData[
-                  selectedService as keyof typeof serviceRatingsData
-                ]["5"],
+                data: allServiceYears.map(
+                  (year) =>
+                    allServices[selectedService]?.[parseInt(year)]?.[5] || 0
+                ),
                 backgroundColor: "#16a085",
                 borderColor: "#16a085",
               },
