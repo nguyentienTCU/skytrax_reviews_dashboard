@@ -4,6 +4,7 @@ import { Review } from "../../type/Review";
 export async function getAircraftAnalysis() {
 	try {
 		const reviews = (await getChartData("reviews.csv")) as Review[];
+		console.log(reviews);
 		return {
 			aircraftManufacturersPercentage:
 				getAircraftManufacturersPercentage(reviews),

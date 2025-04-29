@@ -6,13 +6,13 @@ import { getCustomerAnalysis } from "@/lib/getData/getCustomerAnalysis";
 const CustomerAnalysis = async () => {
 	const { reviewsByCountry, verifiedAndUnverifiedReviews } = await getCustomerAnalysis();
 	return (
-		<div className="card">
-			<h2 className="text-xl font-bold mb-4 text-gray-700">
+		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
+			<h2 className="text-xl font-bold mb-4">
 				Customer Analysis
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold mb-2">
 						Reviews by Country
 					</h3>
 					<div className="chart-container h-full">
@@ -29,7 +29,7 @@ const CustomerAnalysis = async () => {
 					</div>
 				</div>
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold mb-2">
 						Verified vs. Unverified Reviews
 					</h3>
 					<div className="chart-container h-full">
