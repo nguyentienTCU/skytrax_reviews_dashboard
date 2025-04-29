@@ -1,79 +1,103 @@
 import { ChartData, ChartOptions } from "chart.js";
 import BaseChart from "./BaseChart";
+import { LineChartDataset, LineChartYAxis } from "@/type/LineChart";
 
-interface ReviewsTimeChartProps {
+interface LineChartProps {
 	title?: string;
-    xTitle?: string;
-    yTitle?: string;
-    valueLabels: string[];
-	values: number[];
+	xTitle?: string;
+	valueLabels: string[];
+	datasets: LineChartDataset[];
+	yAxes: LineChartYAxis[];
 	height?: string;
 	width?: string;
-    backgroundColor?: string;
-    borderColor?: string;
-    borderWidth?: number;
 }
 
-const ReviewsTimeChart: React.FC<ReviewsTimeChartProps> = ({
+const LineChart: React.FC<LineChartProps> = ({
 	title,
-    valueLabels,
-    values,
-    xTitle,
-    yTitle,
+	xTitle,
+	valueLabels,
+	datasets,
+	yAxes,
 	height,
 	width,
-    backgroundColor,
-    borderColor,
-    borderWidth,
-
 }) => {
 	const chartData: ChartData<"line"> = {
 		labels: valueLabels,
-		datasets: [
-			{
-				label: title || " ",
-				data: values,
-				borderColor: borderColor || "rgb(59, 130, 246)",
-				backgroundColor: backgroundColor || "rgba(59, 130, 246, 0.1)",
-				tension: 0.3,
-				fill: true,
-			},
-		],
+		datasets: datasets.map((ds) => ({
+			label: ds.label,
+			data: ds.data,
+			borderColor: ds.borderColor || "rgb(53, 162, 235)",
+			backgroundColor: ds.backgroundColor || "rgba(53, 162, 235, 0.5)",
+			yAxisID: ds.yAxisID || yAxes[0]?.id || "y",
+			fill: ds.fill !== undefined ? ds.fill : true,
+			tension: ds.tension !== undefined ? ds.tension : 0.3,
+			borderWidth: ds.borderWidth || 2,
+		})),
 	};
 
+	const scales: any = {
+		x: {
+			title: {
+				display: true,
+				text: xTitle || " ",
+			},
+			grid: {
+				color: "rgba(0, 0, 0, 0.1)",
+				drawOnChartArea: true,
+			},
+		},
+	};
+	yAxes.forEach((axis) => {
+		scales[axis.id] = {
+			type: "linear",
+			display: axis.display !== false,
+			position: axis.position,
+			title: {
+				display: true,
+				text: axis.title,
+			},
+			min: axis.min,
+			max: axis.max,
+			grid: {
+				color: "rgba(0, 0, 0, 0.1)",
+				drawOnChartArea: axis.position === "left",
+			},
+			ticks: axis.stepSize ? { stepSize: axis.stepSize } : undefined,
+		};
+	});
+
 	const options: ChartOptions<"line"> = {
+		responsive: true,
+		interaction: {
+			mode: "index",
+			intersect: false,
+		},
 		plugins: {
 			legend: {
 				display: true,
 				position: "top",
 			},
+			title: title
+				? {
+						display: true,
+						text: title,
+				  }
+				: undefined,
 		},
-		scales: {
-			y: {
-				beginAtZero: true,
-				title: {
-					display: true,
-					text: yTitle || " ",
-				},
-			},
-			x: {
-				title: {
-					display: true,
-					text: xTitle || " ",
-				},
-			},
-		},
+		scales,
 	};
 
 	return (
-		<BaseChart
-			type="line"
-			data={chartData}
-			options={options}
-			height={height}
-			width={width}
-		/>
+		<div className="dark:invert dark:brightness-90">
+			<BaseChart
+				type="line"
+				data={chartData}
+				options={options}
+				height={height}
+				width={width}
+			/>
+		</div>
 	);
 };
 
-export default ReviewsTimeChart;
+export default LineChart;

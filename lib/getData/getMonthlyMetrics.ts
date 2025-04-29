@@ -40,7 +40,8 @@ export async function getMonthlyMetrics() {
 
     function getMonth() {
         const currentDate = new Date();
-        const currentMonth = currentDate.getMonth();
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const currentMonth = monthNames[currentDate.getMonth()];
         const currentYear = currentDate.getFullYear();
         return `${currentMonth} - ${currentYear}`;
     }

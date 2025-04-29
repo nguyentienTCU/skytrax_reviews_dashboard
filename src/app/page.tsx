@@ -12,18 +12,18 @@ import ReviewTextAnalysis from "@/components/ReviewTextAnalysis/ReviewTextAnalys
 import Footer from "@/components/custom-ui/Footer";
 
 export default function Home() {
-  return (
-    <div className="dashboard-container">
-      <Header />
-      <DashboardInfoHeader />
-      <MonthlyMetrics />
-      <DataSummary />
-      <TimeAnalysis />
-      <AircraftAnalysis />
-      <RouteAnalysis />
-      <CustomerAnalysis />
-      <ReviewTextAnalysis />
-      <Footer />
-    </div>
-  );
+	return (
+		<div className="dashboard-container bg-white dark:bg-gray-900">
+			<Header />
+			<DashboardInfoHeader />
+			<MonthlyMetrics />
+			<DataSummary />
+			<TimeAnalysis />
+			<AircraftAnalysis />
+			<RouteAnalysis />
+			<CustomerAnalysis />
+			<ReviewTextAnalysis />
+			<Footer />
+		</div>
+	);
 }
