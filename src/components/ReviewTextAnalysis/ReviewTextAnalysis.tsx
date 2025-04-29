@@ -6,13 +6,13 @@ import { getReviewTextAnalysis } from "@/lib/getData/getReviewTextAnalysis";
 const ReviewTextAnalysis = async () => {
 	const { sampleReviews, ratingBandsTypeCount } = await getReviewTextAnalysis();
 	return (
-		<div className="card">
-			<h2 className="text-xl font-bold mb-4 text-gray-700">
+		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
+			<h2 className="text-xl font-bold mb-4">
 				Review Text Analysis
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold mb-2">
 						Common Keywords
 					</h3>
 					<div className="p-4 bg-gray-50 rounded-lg">
@@ -61,7 +61,7 @@ const ReviewTextAnalysis = async () => {
 					</div>
 				</div>
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold mb-2">
 						Sentiment Analysis
 					</h3>
 					<div className="chart-container h-64">
@@ -87,7 +87,7 @@ const ReviewTextAnalysis = async () => {
 				</div>
 			</div>
 			<div className="mt-6">
-				<h3 className="text-lg font-semibold text-gray-600 mb-2">
+				<h3 className="text-lg font-semibold mb-2">
 					Sample Reviews
 				</h3>
 				<div className="space-y-4">

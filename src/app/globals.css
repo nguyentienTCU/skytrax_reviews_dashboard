@@ -1,116 +1,142 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background-color: var(--background);
+	color: var(--foreground);
+	font-family: Arial, Helvetica, sans-serif;
+	min-height: 100vh;
 }
 
 .dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
 }
 
 .card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 24px;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin-bottom: 24px;
 }
 
 .chart-container {
-  position: relative;
-  margin: auto;
-  height: 300px;
-  width: 100%;
+	position: relative;
+	margin: auto;
+	height: 300px;
+	width: 100%;
 }
 
 .stat-card {
-  transition: transform 0.3s;
+	transition: transform 0.3s;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+	transform: translateY(-5px);
 }
 
 .loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  margin: 20px auto;
+	border: 5px solid #f3f3f3;
+	border-top: 5px solid #3498db;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	animation: spin 2s linear infinite;
+	margin: 20px auto;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
 .sidebar {
-  border-right: 1px solid #e2e8f0;
+	border-right: 1px solid #e2e8f0;
 }
 
 .filter-section {
-  padding: 15px;
-  border-bottom: 1px solid #e2e8f0;
+	padding: 15px;
+	border-bottom: 1px solid #e2e8f0;
 }
 
 .markdown-text {
-  line-height: 1.6;
+	line-height: 1.6;
 }
 
 .badge {
-  display: inline-block;
-  padding: 0.25em 0.4em;
-  font-size: 75%;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
+	display: inline-block;
+	padding: 0.25em 0.4em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 0.25rem;
 }
 
 .badge-primary {
-  color: #fff;
-  background-color: #4299e1;
+	color: #fff;
+	background-color: #4299e1;
 }
 
 .badge-success {
-  color: #fff;
-  background-color: #48bb78;
+	color: #fff;
+	background-color: #48bb78;
 }
 
 .badge-warning {
-  color: #fff;
-  background-color: #ed8936;
+	color: #fff;
+	background-color: #ed8936;
 }
 
 .badge-danger {
-  color: #fff;
-  background-color: #f56565;
-} 
+	color: #fff;
+	background-color: #f56565;
+}
+
+/* Custom Scrollbar Styles */
+.scrollbar-thin::-webkit-scrollbar {
+	width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+	background: #374151;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+	background: #4b5563;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+	background: #6b7280;
+}

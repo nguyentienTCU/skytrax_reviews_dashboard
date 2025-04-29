@@ -1,12 +1,13 @@
 import React from "react";
 import { getMonthlyMetrics } from "@/lib/getData/getMonthlyMetrics";
+import MetricCard from "./MetricCard";
 
 type Metric = {
 	label: string;
 	value: string;
 	description: string;
-  change: string;        // new
-  changeLabel: string;  
+	change: string;
+	changeLabel: string;
 };
 
 const MonthlyMetrics = async () => {
@@ -63,53 +64,44 @@ const MonthlyMetrics = async () => {
 			label: "Recommendation Percentage",
 			value: `${recommendationPercentage}%`,
 			description: recommendationDescription(),
-      change: "0.00%", // hardcoded for now
-      changeLabel: "previous month", // hardcoded for now
+			change: "0.00%",
+			changeLabel: "previous month",
 		},
 		{
 			label: "VFM Score",
 			value: `${vfmScore.toFixed(2)} / 5`,
 			description: vfmDescription(),
-      change: "0.000%", // hardcoded for now
-      changeLabel: "from last previous month", // hardcoded for now
+			change: "0.000%",
+			changeLabel: "from previous month",
 		},
 		{
 			label: "Average Rating",
 			value: `${averageRating.toFixed(2)} / 5`,
 			description: averageRatingDescription(),
-      change: "0.000%", // hardcoded for now
-      changeLabel: "from last previous month", // hardcoded for now
+			change: "0.000%",
+			changeLabel: "from previous month",
 		},
 		{
 			label: "Total number of reviews",
 			value: totalNumberOfReviews.toString(),
 			description: reviewCountDescription(),
-      change: "0", // hardcoded for now
-      changeLabel: "reviews from last previous month", // hardcoded for now
+			change: "0",
+			changeLabel: "reviews from previous month",
 		},
 	];
 
-  return (
-    <div className="bg-gray-900 text-gray-100 p-8 rounded-lg mb-8">
-      <h2 className="text-3xl font-bold mb-8 text-center">
-        This Month Metrics ({month})
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {metrics.map((metric, idx) => (
-          <div key={idx}>
-            <div className="text-base font-semibold mb-2">{metric.label}</div>
-            <div className="text-4xl font-normal mb-2">{metric.value}</div>
-            <div className="flex items-center text-green-500 mb-2">
-              <span className="mr-1">↑</span>
-              <span className="font-semibold">{metric.change}</span>
-              <span className="ml-1">{metric.changeLabel}</span>
-            </div>
-            <div className="text-gray-400 text-sm">{metric.description}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<div className="card bg-gray-50 dark:bg-gray-900 p-8 rounded-lg mb-8">
+			<h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+				This Month Metrics ({month})
+			</h2>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				{metrics.map((metric, idx) => (
+					<MetricCard key={idx} {...metric} />
+				))}
+			</div>
+		</div>
+	);
 };
 
 export default MonthlyMetrics;

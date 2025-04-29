@@ -6,11 +6,11 @@ const RouteAnalysis = async () => {
 	const { topOriginCities, topDestinationCities, topRoutes } =
 		await getRouteAnalysis();
 	return (
-		<div className="card">
-			<h2 className="text-xl font-bold mb-4 text-gray-700">Route Analysis</h2>
+		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
+			<h2 className="text-xl font-bold mb-4 ">Route Analysis</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold mb-2">
 						Top Origin Cities
 					</h3>
 					<div className="chart-container h-80">
@@ -28,7 +28,7 @@ const RouteAnalysis = async () => {
 					</div>
 				</div>
 				<div>
-					<h3 className="text-lg font-semibold text-gray-600 mb-2">
+					<h3 className="text-lg font-semibold  mb-2">
 						Top Destination Cities
 					</h3>
 					<div className="chart-container h-80">
@@ -47,23 +47,23 @@ const RouteAnalysis = async () => {
 				</div>
 			</div>
 			<div className="mt-6">
-				<h3 className="text-lg font-semibold text-gray-600 mb-2">
+				<h3 className="text-lg font-semibold mb-2">
 					Popular Routes
 				</h3>
 				<div className="overflow-auto">
-					<table className="min-w-full bg-white">
+					<table className="min-w-full">
 						<thead>
 							<tr>
-								<th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="py-2 px-4 border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
 									Origin
 								</th>
-								<th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="py-2 px-4 border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
 									Destination
 								</th>
-								<th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="py-2 px-4 border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
 									Count
 								</th>
-								<th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+								<th className="py-2 px-4 border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
 									Avg. Rating
 								</th>
 							</tr>
@@ -71,16 +71,16 @@ const RouteAnalysis = async () => {
 						<tbody>
 							{topRoutes.map((route, index) => (
 								<tr key={index}>
-									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+									<td className="py-2 px-4 border-b border-gray-200 ">
 										{route.origin}
 									</td>
-									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+									<td className="py-2 px-4 border-b border-gray-200 ">
 										{route.destination}
 									</td>
-									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+									<td className="py-2 px-4 border-b border-gray-200 ">
 										{route.count}
 									</td>
-									<td className="py-2 px-4 border-b border-gray-200 text-gray-700">
+									<td className="py-2 px-4 border-b border-gray-200 ">
 										<div className="flex items-center">
 											<span className="text-yellow-500">
 												{"★".repeat(Math.floor(route.averageRating))}
