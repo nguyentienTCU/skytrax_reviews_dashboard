@@ -12,6 +12,7 @@ import {
 	Title,
 	Tooltip,
 	Legend,
+	Filler,
 } from "chart.js";
 
 /**
@@ -27,7 +28,8 @@ ChartJS.register(
 	ArcElement,
 	Title,
 	Tooltip,
-	Legend
+	Legend,
+	Filler
 );
 
 // Define the supported chart types

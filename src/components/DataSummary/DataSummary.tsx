@@ -48,7 +48,7 @@ const DataSummary = async () => {
 	return (
 		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
 			<h2 className="text-xl font-bold mb-4">Data Summary</h2>
-			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
 				{stats.map((stat, index) => (
 					<StatCard key={index} {...stat} />
 				))}
