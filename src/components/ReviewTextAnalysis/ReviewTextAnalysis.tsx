@@ -73,12 +73,12 @@ const ReviewTextAnalysis = async () => {
 							title="Review Sentiment Analysis (%)"
 							backgroundColor={[
 								"rgba(75, 192, 192, 0.7)",
-								"rgba(255, 206, 86, 0.7)",
+								"rgba(255, 159, 64, 0.7)",
 								"rgba(255, 99, 132, 0.7)",
 							]}
 							borderColor={[
 								"rgb(75, 192, 192)",
-								"rgb(255, 206, 86)",
+								"rgb(255, 159, 64)",
 								"rgb(255, 99, 132)",
 							]}
 							borderWidth={1}

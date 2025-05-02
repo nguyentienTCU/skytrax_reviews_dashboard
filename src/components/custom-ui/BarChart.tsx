@@ -128,8 +128,30 @@ const BarGraph: React.FC<BarGraphProps> = ({
       datalabels: {
         display: showDataLabels ? "auto" : false,
         anchor: axis === "y" ? "end" : "end",
-        align: axis === "y" ? "right" : "top",
-        offset: axis === "y" ? 4 : 0,
+        align: function (context) {
+          const index = context.dataIndex;
+          const data = context.dataset.data;
+          const currentValue = data[index];
+          const firstValue = data[0];
+
+          // Ensure both are numbers
+          if (
+            typeof currentValue === "number" &&
+            typeof firstValue === "number"
+          ) {
+            const isEndGroup = index === 0 || currentValue >= firstValue / 10;
+            return isEndGroup
+              ? axis === "y"
+                ? "start"
+                : "end"
+              : axis === "y"
+              ? "right"
+              : "top";
+          }
+          // Fallback alignment if data is not a number
+          return "right";
+        },
+        offset: axis === "y" ? 0 : 0,
         formatter: (value) => value,
         color: isDarkMode ? "#e5e7eb" : "black",
         font: {

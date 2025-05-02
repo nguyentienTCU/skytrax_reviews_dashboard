@@ -40,6 +40,21 @@ const TimeAnalysis = () => {
     allServices,
   } = data;
 
+  const roundedAvgRecommendation = avgRecommendation.map((item) => ({
+    ...item,
+    percentage: Number(item.percentage.toFixed(2)),
+  }));
+
+  const roundedAvgMoneyValue = avgMoneyValue.map((item) => ({
+    ...item,
+    averageMoneyValue: Number(item.averageMoneyValue.toFixed(2)),
+  }));
+
+  const roundedAvgScore = avgScore.map((item) => ({
+    ...item,
+    averageScore: Number(item.averageScore.toFixed(2)),
+  }));
+
   const [selectedService, setSelectedService] =
     useState<string>("seat_comfort");
 
@@ -69,7 +84,7 @@ const TimeAnalysis = () => {
         },
         {
           label: "Avg Recommendation (%)",
-          data: avgRecommendation.map((item) => item.percentage),
+          data: roundedAvgRecommendation.map((item) => item.percentage),
           borderColor: "rgb(255, 99, 132)",
           backgroundColor: "rgba(255, 99, 132, 0.5)",
           yAxisID: "y1",
@@ -97,14 +112,14 @@ const TimeAnalysis = () => {
       datasets: [
         {
           label: "Avg Money Value",
-          data: avgMoneyValue.map((item) => item.averageMoneyValue),
+          data: roundedAvgMoneyValue.map((item) => item.averageMoneyValue),
           borderColor: "rgb(75, 192, 192)",
           backgroundColor: "rgba(75, 192, 192, 0.5)",
           yAxisID: "y",
         },
         {
           label: "Avg Score",
-          data: avgScore.map((item) => item.averageScore),
+          data: roundedAvgScore.map((item) => item.averageScore),
           borderColor: "rgb(153, 102, 255)",
           backgroundColor: "rgba(153, 102, 255, 0.5)",
           yAxisID: "y",

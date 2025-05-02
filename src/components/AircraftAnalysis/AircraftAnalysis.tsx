@@ -62,7 +62,7 @@ const AircraftAnalysis = async () => {
             <BarGraph
               valueLabels={aircraftModels.map((model) => model.model)}
               values={aircraftModels.map((model) => model.count)}
-              title="Reviews by Aircraft Model"
+              xTitle="Number of Reviews"
               backgroundColor={["rgba(54, 162, 235, 0.7)"]}
               borderColor={["rgb(54, 162, 235)"]}
               borderWidth={1}

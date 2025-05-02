@@ -40,7 +40,7 @@ const CustomerAnalysis = async () => {
             <BarGraph
               values={reviewsByCountry.map((review) => review.count)}
               valueLabels={reviewsByCountry.map((review) => review.country)}
-              title="Reviews by Customer Country"
+              xTitle="Number of Reviews"
               backgroundColor={["rgba(255, 99, 132, 0.7)"]}
               borderColor={["rgb(255, 99, 132)"]}
               borderWidth={1}
@@ -116,18 +116,18 @@ const CustomerAnalysis = async () => {
                   (travellerType) => travellerType.percentage
                 )}
                 backgroundColor={[
-                  "rgba(0, 180, 180, 0.7)",
-                  "rgba(255, 140, 0, 0.7)",
-                  "rgba(0, 200, 83, 0.7)",
-                  "rgba(186, 85, 211, 0.7)",
-				  "rgba(255, 215, 0, 0.7)"
+                  "rgba(255, 159, 64, 0.7)",
+                  "rgba(75, 192, 192, 0.7)",
+                  "rgba(153, 102, 255, 0.7)",
+                  "rgba(255, 99, 132, 0.7)",
+                  "rgba(107, 114, 128, 0.7)",
                 ]}
                 borderColor={[
-                  "rgba(0, 128, 255)",
-                  "rgba(255, 140, 0)",
-                  "rgba(0, 200, 83)",
-                  "rgba(186, 85, 211)",
-				  "rgba(255, 215, 0)"
+                  "rgb(255, 159, 64)",
+                  "rgb(75, 192, 192)",
+                  "rgb(153, 102, 255)",
+                  "rgb(255, 99, 132)",
+                  "rgb(107, 114, 128)",
                 ]}
                 borderWidth={1}
                 title="Reviews by Traveller Type (%)"

@@ -18,8 +18,6 @@ const RouteAnalysis = async () => {
 							valueLabels={topOriginCities.map((city) => city.city)}
 							values={topOriginCities.map((city) => city.count)}
 							xTitle="Number of Reviews"
-							yTitle="City"
-							title="Reviews by Origin City"
 							backgroundColor={["rgba(153, 102, 255, 0.7)"]}
 							borderColor={["rgb(153, 102, 255)"]}
 							borderWidth={1}
@@ -37,8 +35,6 @@ const RouteAnalysis = async () => {
 							valueLabels={topDestinationCities.map((city) => city.city)}
 							values={topDestinationCities.map((city) => city.count)}
 							xTitle="Number of Reviews"
-							yTitle="City"
-							title="Reviews by Destination City"
 							backgroundColor={["rgba(255, 206, 86, 0.7)"]}
 							borderColor={["rgb(255, 206, 86)"]}
 							borderWidth={1}
