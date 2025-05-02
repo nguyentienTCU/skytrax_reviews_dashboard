@@ -4,7 +4,6 @@ import { uploadCSVToGCS } from "./gcs-utils";
 export async function fetchAndSaveData() {
   try {
     // Fetch data from Snowflake
-    console.log("check here");
     await connectToSnowflake();
     const data = await executeQuery(`
       /* =============================================================
