@@ -211,8 +211,8 @@ const TimeAnalysis = () => {
                   (year) =>
                     allServices[selectedService]?.[parseInt(year)]?.[2] || 0
                 ),
-                backgroundColor: "rgba(255, 206, 86, 0.7)",
-                borderColor: "rgba(255, 206, 86, 0.7)",
+                backgroundColor: "rgba(255, 159, 64, 0.7)",
+                borderColor: "rgba(255, 159, 64, 0.7)",
               },
               {
                 label: "3",
@@ -220,8 +220,8 @@ const TimeAnalysis = () => {
                   (year) =>
                     allServices[selectedService]?.[parseInt(year)]?.[3] || 0
                 ),
-                backgroundColor: "rgba(135, 206, 250, 0.7)",
-                borderColor: "rgba(135, 206, 250, 0.7)",
+                backgroundColor: "rgba(255, 206, 86, 0.8)",
+                borderColor: "rgba(255, 206, 86, 0.8)",
               },
               {
                 label: "4",
@@ -229,8 +229,8 @@ const TimeAnalysis = () => {
                   (year) =>
                     allServices[selectedService]?.[parseInt(year)]?.[4] || 0
                 ),
-                backgroundColor: "rgba(75, 192, 192, 0.7)",
-                borderColor: "rgba(75, 192, 192, 0.7)",
+                backgroundColor: "#99d594",
+                borderColor: "#99d594",
               },
               {
                 label: "5",
@@ -238,8 +238,8 @@ const TimeAnalysis = () => {
                   (year) =>
                     allServices[selectedService]?.[parseInt(year)]?.[5] || 0
                 ),
-                backgroundColor: "#16a085",
-                borderColor: "#16a085",
+                backgroundColor: "rgba(34, 197, 94)",
+                borderColor: "rgba(34, 197, 94)",
               },
             ]}
             xTitle="Year"
