@@ -24,6 +24,7 @@ const RouteAnalysis = async () => {
 							borderColor={["rgb(153, 102, 255)"]}
 							borderWidth={1}
 							axis="y"
+							showDataLabels={true}
 						/>
 					</div>
 				</div>
@@ -42,6 +43,7 @@ const RouteAnalysis = async () => {
 							borderColor={["rgb(255, 206, 86)"]}
 							borderWidth={1}
 							axis="y"
+							showDataLabels={true}
 						/>
 					</div>
 				</div>

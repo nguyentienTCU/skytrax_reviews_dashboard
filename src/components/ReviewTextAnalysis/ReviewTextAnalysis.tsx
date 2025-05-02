@@ -5,6 +5,8 @@ import { getReviewTextAnalysis } from "@/lib/getData/getReviewTextAnalysis";
 
 const ReviewTextAnalysis = async () => {
 	const { sampleReviews, ratingBandsTypeCount } = await getReviewTextAnalysis();
+
+	const roundedRatingBandsTypeCount = ratingBandsTypeCount.map((review) => (Number(review.toFixed(2))));
 	return (
 		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
 			<h2 className="text-xl font-bold mb-4">
@@ -62,11 +64,11 @@ const ReviewTextAnalysis = async () => {
 				</div>
 				<div>
 					<h3 className="text-lg font-semibold mb-2">
-						Sentiment Analysis
+						Sentiment Analysis Composition
 					</h3>
 					<div className="chart-container h-64">
 						<PieGraph
-							values={ratingBandsTypeCount}
+							values={roundedRatingBandsTypeCount.map((review) => review)}
 							valueLabels={["Positive", "Neutral", "Negative"]}
 							title="Review Sentiment Analysis (%)"
 							backgroundColor={[

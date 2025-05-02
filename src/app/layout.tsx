@@ -3,7 +3,8 @@ import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SidebarWrapper from "@/components/custom-ui/Sidebar";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeColorProvider } from "./context/ThemeContext";
+import ThemeRegistry from "@/components/ThemeRegistry";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -30,11 +31,15 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<SidebarWrapper>{children}</SidebarWrapper>
+				<ThemeRegistry>
+					<ThemeColorProvider>
+					<SidebarWrapper>{children}</SidebarWrapper>
+					</ThemeColorProvider>
+				</ThemeRegistry>
 			</body>
 		</html>
 	);

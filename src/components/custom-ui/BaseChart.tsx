@@ -3,16 +3,15 @@
 import { Chart as ChartJS, ChartData, ChartOptions } from "chart.js";
 import { Line, Bar, Pie, Doughnut } from "react-chartjs-2";
 import {
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	BarElement,
-	ArcElement,
-	Title,
-	Tooltip,
-	Legend,
-	Filler,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
 } from "chart.js";
 
 /**
@@ -20,16 +19,15 @@ import {
  * This is necessary before using any chart functionality
  */
 ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	BarElement,
-	ArcElement,
-	Title,
-	Tooltip,
-	Legend,
-	Filler
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
 );
 
 // Define the supported chart types
@@ -42,13 +40,15 @@ type ChartType = "line" | "bar" | "pie" | "doughnut";
  * @property options - Optional chart configuration options
  * @property height - Optional height of the chart container
  * @property width - Optional width of the chart container
+ * @property plugins - Optional plugins to apply to the chart
  */
 interface BaseChartProps {
-	type: ChartType;
-	data: ChartData<any>;
-	options?: ChartOptions<any>;
-	height?: string;
-	width?: string;
+  type: ChartType;
+  data: ChartData<any>;
+  options?: ChartOptions<any>;
+  height?: string;
+  width?: string;
+  plugins?: any[];
 }
 
 /**
@@ -62,49 +62,54 @@ interface BaseChartProps {
  * @param options - Optional chart configuration options
  * @param height - Optional height of the chart container (default: "300px")
  * @param width - Optional width of the chart container (default: "100%")
+ * @param plugins - Optional plugins to apply to the chart
  */
 const BaseChart: React.FC<BaseChartProps> = ({
-	type,
-	data,
-	options,
-	height = "300px",
-	width = "100%",
+  type,
+  data,
+  options,
+  height = "300px",
+  width = "100%",
+  plugins = [],
 }) => {
-	// Default chart options that apply to all chart types
-	const defaultOptions: ChartOptions = {
-		responsive: true, // Make the chart responsive to container size
-		maintainAspectRatio: false, // Allow custom height/width
-		plugins: {
-			legend: {
-				position: "top" as const, // Position legend at the top
-			},
-		},
-	};
+  // Default chart options that apply to all chart types
+  const defaultOptions: ChartOptions = {
+    responsive: true, // Make the chart responsive to container size
+    maintainAspectRatio: false, // Allow custom height/width
+    plugins: {
+      legend: {
+        position: "top" as const, // Position legend at the top
+      },
+    },
+  };
 
-	// Merge default options with any custom options provided
-	const chartOptions = { ...defaultOptions, ...options };
+  // Merge default options with any custom options provided
+  const chartOptions = { ...defaultOptions, ...options };
 
-	/**
-	 * Render the appropriate chart component based on the type
-	 * @returns The React component for the selected chart type
-	 */
-	const renderChart = () => {
-		switch (type) {
-			case "line":
-				return <Line data={data} options={chartOptions} />;
-			case "bar":
-				return <Bar data={data} options={chartOptions} />;
-			case "pie":
-				return <Pie data={data} options={chartOptions} />;
-			case "doughnut":
-				return <Doughnut data={data} options={chartOptions} />;
-			default:
-				return null;
-		}
-	};
+  /**
+   * Render the appropriate chart component based on the type
+   * @returns The React component for the selected chart type
+   */
+  const renderChart = () => {
+    switch (type) {
+      case "line":
+        return <Line data={data} options={chartOptions} plugins={plugins} />;
+      case "bar":
+        return <Bar data={data} options={chartOptions} plugins={plugins} />;
+      case "pie":
+        return <Pie data={data} options={chartOptions} plugins={plugins} />;
+      case "doughnut":
+        return (
+          <Doughnut data={data} options={chartOptions} plugins={plugins} />
+        );
+      default:
+        return null;
+    }
+  };
 
-	// Return a container div with the chart inside
-	return <div style={{ height, width }}>{renderChart()}</div>;
+  // Return a container div with the chart inside
+  return <div style={{ height, width }}>{renderChart()}</div>;
 };
 
 export default BaseChart;
+
