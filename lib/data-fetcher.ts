@@ -1,5 +1,6 @@
 import { executeQuery, connectToSnowflake } from "./snowflake";
-import { uploadCSVToGCS } from "./gcs-utils";
+// import { uploadCSVToGCS } from "./gcs-utils";
+import { uploadFileToS3Bucket } from "./s3-utils";
 
 export async function fetchAndSaveData() {
   try {
@@ -142,9 +143,9 @@ ORDER BY 1 DESC
     // Convert to CSV
     const csvContent = convertToCSV(data);
 
-    // Upload to Google Cloud Storage with consistent filename
-    const fileName = "reviews.csv";
-    await uploadCSVToGCS(csvContent, fileName);
+    // Upload to a cloud storage
+    // await uploadCSVToGCS(csvContent, fileName);
+    await uploadFileToS3Bucket(csvContent, "british-airways--db-bucket", "data/reviews.csv");
 
     return {
       success: true,
