@@ -1,7 +1,8 @@
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getFromCache, saveToCache } from "./dataCache";
 import { Readable } from "stream";
 
-const s3 = new S3Client({ region: "us-east-1" });
+const s3 = new S3Client({ region: process.env.AWS_REGION });
 
 export async function uploadFileToS3Bucket(file: String, bucketName: string, key: string): Promise<void> {
     try {
@@ -17,18 +18,25 @@ export async function uploadFileToS3Bucket(file: String, bucketName: string, key
 }
 
 export async function getFileContentFroms3Bucket(bucketName: string, key: string): Promise<string> {
-        const command = new GetObjectCommand({
-            Bucket: bucketName,
-            Key: key,
-        });
-        const response = await s3.send(command);
+    const cacheKey = `${bucketName}/${key}`;
+    const cacheData = getFromCache(cacheKey);
+    if (cacheData) {
+        return cacheData;
+    }
+    
+    const command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+    });
+    const response = await s3.send(command);
 
-        if (!response.Body || !(response.Body instanceof Readable)) {
-            throw new Error("No body in response");
-        }
+    if (!response.Body || !(response.Body instanceof Readable)) {
+        throw new Error("No body in response");
+    }
 
-        const content = await streamToString(response.Body);
-        return content;
+    const content = await streamToString(response.Body);
+    saveToCache(cacheKey, content);
+    return content;
 }
 
 function streamToString(stream: Readable): Promise<string> {

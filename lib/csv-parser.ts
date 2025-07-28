@@ -5,7 +5,7 @@ import Papa from "papaparse";
 export async function getChartData(fileName: string) {
   try {
     // const csvContent = await getCSVFromGCS(fileName);
-    const csvContent = await getFileContentFroms3Bucket("data", fileName);
+    const csvContent = await getFileContentFroms3Bucket("british-airways--db-bucket", `data/${fileName}`);
 
     const { data } = Papa.parse(csvContent, {
       header: true,
