@@ -1,6 +1,8 @@
 import { getChartData } from "../csv-parser";
 import { Review } from "../../type/Review";
-export async function getDataSummary() {
+import { DataSummary } from "../../type/DataSummary";
+
+export async function getDataSummary(): Promise<DataSummary> {
 	try {
 		const data: Review[] = (await getChartData("reviews.csv")) as Review[];
 		return {

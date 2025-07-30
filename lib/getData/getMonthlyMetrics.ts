@@ -2,10 +2,11 @@
 
 import { Review } from "../../type/Review";
 import { getChartData } from "../csv-parser";
+import { MonthlyMetricsData } from "../../type/MonthlyMetricsData";
 
 export async function getMonthlyMetrics(
 	compareWith: "previous month" | "previous year"
-) {
+): Promise<MonthlyMetricsData> {
 	try {
 		const reviews = (await getChartData("reviews.csv")) as Review[];
 		const currentMonthReviews = getCurrentMonthReviews(reviews);

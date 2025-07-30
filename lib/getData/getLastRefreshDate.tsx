@@ -1,7 +1,7 @@
 import { getChartData } from "../csv-parser";
 import { Review } from "../../type/Review";
 
-export async function getLastRefreshDate() {
+export async function getLastRefreshDate(): Promise<string> {
 	try {
 		const reviews = (await getChartData("reviews.csv")) as Review[];
 		const lastRefreshDate = reviews[reviews.length - 1].EL_UPDATED_AT;

@@ -1,7 +1,8 @@
 import { getChartData } from "../csv-parser";
 import { Review } from "../../type/Review";
+import { CustomerAnalysisData } from "../../type/CustomerAnalysisData";
 
-export async function getCustomerAnalysis() {
+export async function getCustomerAnalysis(): Promise<CustomerAnalysisData> {
 	try {
 		const reviews = (await getChartData("reviews.csv")) as Review[];
 		return {
