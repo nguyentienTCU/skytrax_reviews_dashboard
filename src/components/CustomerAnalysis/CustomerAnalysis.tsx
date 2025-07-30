@@ -1,6 +1,6 @@
 import React from "react";
-import BarGraph from "../custom-ui/BarChart";
-import PieGraph from "../custom-ui/PieChart";
+import BarGraph from "@/components/custom-ui/BarChart";
+import PieGraph from "@/components/custom-ui/PieChart";
 import { getCustomerAnalysis } from "@/lib/getData/getCustomerAnalysis";
 
 const CustomerAnalysis = async () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import BarGraph from "../custom-ui/BarChart";
+import BarGraph from "@/components/custom-ui/BarChart";
 import { getRouteAnalysis } from "@/lib/getData/getRouteAnalysis";
 
 const RouteAnalysis = async () => {

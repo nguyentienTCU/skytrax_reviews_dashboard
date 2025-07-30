@@ -4,10 +4,10 @@ import LineChart from "@/components/custom-ui/LineChart";
 import BarGraph from "@/components/custom-ui/BarChart";
 import FilterSection from "@/components/custom-ui/FilterSection";
 import { LineChartDataset, LineChartYAxis } from "@/type/LineChart";
-import { TimeAnalysisData, ServiceRatings } from "@/type/TimeAnalysisData";
+import { TimebasedAnalysisData } from "@/type/TimebasedAnalysisData";
 
 const TimeAnalysis = () => {
-  const [data, setData] = useState<TimeAnalysisData>({
+  const [data, setData] = useState<TimebasedAnalysisData>({
     reviewsOverTime: [],
     avgRecommendation: [],
     avgScore: [],
