@@ -1,12 +1,12 @@
-import { getChartData } from "../csv-parser";
-import { Review } from "../../type/Review";
+import { getFileLastModified } from "../s3-utils";
 
 export async function getLastRefreshDate(): Promise<string> {
 	try {
-		const reviews = (await getChartData("reviews.csv")) as Review[];
-		const lastRefreshDate = reviews[reviews.length - 1].EL_UPDATED_AT;
-		const processedDate = lastRefreshDate.slice(4, 25);
-		return processedDate;
+		const lastRefreshDate = await getFileLastModified("british-airways--db-bucket", "data/reviews.json");
+		if (lastRefreshDate) {
+			return lastRefreshDate.toUTCString();
+		}
+		return "N/A";
 	} catch (error) {
 		console.error("Error fetching last refresh date:", error);
 		throw error;

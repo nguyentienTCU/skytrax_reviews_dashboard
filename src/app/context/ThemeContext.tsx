@@ -21,8 +21,6 @@ export function ThemeColorProvider({ children }: { children: React.ReactNode }) 
   }, []);
 
   useEffect(() => {
-    console.log("resolvedTheme: " + resolvedTheme);
-    console.log("theme: " + theme);
     setIsDarkMode(resolvedTheme === "dark");
   }, [resolvedTheme]);
 

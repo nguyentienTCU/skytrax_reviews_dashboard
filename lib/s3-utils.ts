@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getFromCache, saveToCache } from "./dataCache";
 import { Readable } from "stream";
 
@@ -37,6 +37,20 @@ export async function getFileContentFroms3Bucket(bucketName: string, key: string
     const content = await streamToString(response.Body);
     saveToCache(cacheKey, content);
     return content;
+}
+
+export async function getFileLastModified(bucketName: string, key: string): Promise<Date | undefined> {
+    try {
+        const command = new HeadObjectCommand({
+            Bucket: bucketName,
+            Key: key,
+        });
+        const response = await s3.send(command);
+        return response.LastModified;
+    } catch (error) {
+        console.error(`Error getting last modified date for ${key}:`, error);
+        return undefined;
+    }
 }
 
 function streamToString(stream: Readable): Promise<string> {
