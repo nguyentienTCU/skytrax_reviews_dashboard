@@ -16,7 +16,7 @@ import { getAirlinesIndex, getJsonData } from "@/lib/data";
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: { airline?: string };
+  searchParams?: Promise<{ airline?: string | string[] }> ;
 }) {
   const airlines = await getAirlinesIndex();
   if (!airlines.length) {
