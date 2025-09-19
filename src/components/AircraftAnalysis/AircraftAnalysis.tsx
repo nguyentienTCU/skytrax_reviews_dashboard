@@ -2,13 +2,16 @@ import React from "react";
 import PieGraph from "@/components/custom-ui/PieChart";
 import DoughnutChart from "@/components/custom-ui/DoughnutChart";
 import BarGraph from "@/components/custom-ui/BarChart";
-import { getAircraftAnalysis } from "@/lib/getData/getAircraftAnalysis";
 
-const AircraftAnalysis = async () => {
+import { useAirline } from "@/app/context/AirlineContext";
+import { AircraftAnalysisData } from "@/type/AircraftAnalysisData";
+
+const AircraftAnalysis = async ({ data }: { data: AircraftAnalysisData }) => {
+
   const {
     aircraftManufacturersPercentage,
     aircraftModels
-  } = await getAircraftAnalysis();
+  } = data;
 
   const roundedManufacturersPercentage = aircraftManufacturersPercentage
     .filter((manufacturer) => manufacturer.percentage * 100 >= 1)

@@ -1,4 +1,4 @@
-import { getLastRefreshDate } from "@/lib/getData/getLastRefreshDate";
+import { getLastRefreshDate } from "@/lib/getLastRefreshDate";
 
 export default async function DashboardInfo() {
 	const lastRefreshDate = await getLastRefreshDate();

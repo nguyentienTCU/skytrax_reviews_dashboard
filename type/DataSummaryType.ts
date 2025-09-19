@@ -1,5 +1,5 @@
 
-export type DataSummary = {
+export type DataSummaryType = {
   totalReviews: number;
   totalVerifiedReviews: number;
   totalAircraftModels: number;

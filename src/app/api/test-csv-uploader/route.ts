@@ -3,7 +3,7 @@ import { fetchAndSaveData } from "@/lib/data-fetcher";
 
 export async function GET() {
   try {
-    const result = await fetchAndSaveData();
+    await fetchAndSaveData();
 
     return NextResponse.json({
       success: true,

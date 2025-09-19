@@ -1,17 +1,12 @@
 import { render, screen } from '@/test-utils';
 import ReviewTextAnalysis from './ReviewTextAnalysis';
 import PieGraph from '@/components/custom-ui/PieChart';
-import { getReviewTextAnalysis } from '@/lib/getData/getReviewTextAnalysis';
-import { ReviewTextAnalysisData } from 'type/ReviewTextAnalysisData';
+import { ReviewTextAnalysisData } from '../../type/ReviewTextAnalysisData';
 
 jest.mock("@/components/custom-ui/PieChart", () => ({
     __esModule: true,
     default: jest.fn(() => null),
 }))
-
-jest.mock('@/lib/getData/getReviewTextAnalysis', () => ({
-  getReviewTextAnalysis: jest.fn(),
-}));
 
 const mock_data: ReviewTextAnalysisData = {
   sampleReviews: {
@@ -45,14 +40,11 @@ const mock_data: ReviewTextAnalysisData = {
 
 describe('ReviewTextAnalysis', () => {
   beforeEach(() => {
-    (getReviewTextAnalysis as jest.Mock).mockClear();
     (PieGraph as jest.Mock).mockClear();
   });
 
   it('should render titles and pass correct data to charts', async () => {
-    (getReviewTextAnalysis as jest.Mock).mockResolvedValue(mock_data);
-
-    const Component = await ReviewTextAnalysis();
+    const Component = await ReviewTextAnalysis({ data: mock_data });
     render(Component);
 
     // Assert titles are rendered

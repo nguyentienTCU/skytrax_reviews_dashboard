@@ -1,37 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LineChart from "@/components/custom-ui/LineChart";
 import BarGraph from "@/components/custom-ui/BarChart";
 import FilterSection from "@/components/custom-ui/FilterSection";
 import { LineChartDataset, LineChartYAxis } from "@/type/LineChart";
 import { TimebasedAnalysisData } from "@/type/TimebasedAnalysisData";
 
-const TimeAnalysis = () => {
-  const [data, setData] = useState<TimebasedAnalysisData>({
-    reviewsOverTime: [],
-    avgRecommendation: [],
-    avgScore: [],
-    avgMoneyValue: [],
-    allServices: {
-      seat_comfort: {},
-      cabin_staff_service: {},
-      food_and_beverages: {},
-      ground_service: {},
-      inflight_entertainment: {},
-      value_for_money: {},
-      wifi_and_connectivity: {},
-    },
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/fetchData/fetchTimeAnalysisData");
-      const data = await response.json();
-      setData(data);
-    };
-    fetchData();
-  }, []);
-
+const TimeAnalysis = ({ data }: { data: TimebasedAnalysisData }) => {
   const {
     reviewsOverTime,
     avgRecommendation,

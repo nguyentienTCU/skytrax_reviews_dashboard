@@ -1,6 +1,5 @@
 import { render, screen } from '@/test-utils';
 import CustomerAnalysis from "./CustomerAnalysis";
-import { getCustomerAnalysis } from '@/lib/getData/getCustomerAnalysis';
 import PieGraph from '@/components/custom-ui/PieChart';
 import BarGraph from '@/components/custom-ui/BarChart';
 
@@ -35,22 +34,15 @@ const mockData = {
   ],
 };
 
-jest.mock('@/lib/getData/getCustomerAnalysis', () => ({
-  getCustomerAnalysis: jest.fn(),
-}));
-
 describe('CustomerAnalysis', () => {
   beforeEach(() => {
     // Reset mocks before each test
-    (getCustomerAnalysis as jest.Mock).mockClear();
     (PieGraph as jest.Mock).mockClear();
     (BarGraph as jest.Mock).mockClear();
   });
 
   it('should render titles and pass correct data to charts', async () => {
-    (getCustomerAnalysis as jest.Mock).mockResolvedValue(mockData);
-
-    const Component = await CustomerAnalysis();
+    const Component = await CustomerAnalysis({ data: mockData });
     render(Component);
 
     // Assert titles are rendered

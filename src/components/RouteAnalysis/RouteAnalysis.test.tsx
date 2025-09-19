@@ -1,7 +1,6 @@
 import { render, screen } from '@/test-utils';
 import RouteAnalysis from "./RouteAnalysis";
-import { getRouteAnalysis } from '@/lib/getData/getRouteAnalysis';
-import { RouteAnalysisData } from 'type/RouteAnalysisData';
+import { RouteAnalysisData } from '../../type/RouteAnalysisData';
 import BarGraph from '@/components/custom-ui/BarChart';
 
 jest.mock('@/components/custom-ui/BarChart', () => {
@@ -10,10 +9,6 @@ jest.mock('@/components/custom-ui/BarChart', () => {
         default: jest.fn(() => null),
     }
 })
-
-jest.mock('@/lib/getData/getRouteAnalysis', () => ({
-  getRouteAnalysis: jest.fn(),
-}));
 
 const mockRouteAnalysisData: RouteAnalysisData = {
   topOriginCities: [
@@ -35,13 +30,10 @@ const mockRouteAnalysisData: RouteAnalysisData = {
 
 describe('RouteAnalysis', () => {
     beforeEach(() => {
-        (getRouteAnalysis as jest.Mock).mockClear();
         (BarGraph as jest.Mock).mockClear();
     })
   it('renders the component with mock data', async () => {
-    (getRouteAnalysis as jest.Mock).mockResolvedValue(mockRouteAnalysisData);
-
-    const Component = await RouteAnalysis();
+    const Component = await RouteAnalysis({ data: mockRouteAnalysisData });
     render(Component);
 
     expect(screen.getByRole('heading', { level: 2, name: 'Route Analysis' })).toBeInTheDocument();

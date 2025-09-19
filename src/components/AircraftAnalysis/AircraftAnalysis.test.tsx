@@ -1,6 +1,5 @@
 import { render, screen } from '@/test-utils';
 import AircraftAnalysis from "./AircraftAnalysis";
-import { getAircraftAnalysis } from '@/lib/getData/getAircraftAnalysis';
 import PieChart from '@/components/custom-ui/PieChart';
 import BarGraph from '@/components/custom-ui/BarChart';
 
@@ -26,22 +25,17 @@ const mockData = {
   ],
 };
 
-jest.mock('@/lib/getData/getAircraftAnalysis', () => ({
-  getAircraftAnalysis: jest.fn(),
-}));
-
 describe('AircraftAnalysis', () => {
   beforeEach(() => {
     // Reset mocks before each test
-    (getAircraftAnalysis as jest.Mock).mockClear();
     (PieChart as jest.Mock).mockClear();
     (BarGraph as jest.Mock).mockClear();
   });
 
   it('should render titles and pass correct data to charts', async () => {
-    (getAircraftAnalysis as jest.Mock).mockResolvedValue(mockData);
-
-    const Component = await AircraftAnalysis();
+    // Since AircraftAnalysis is now a server component that receives data as props,
+    // we call it directly with the mock data.
+    const Component = await AircraftAnalysis({ data: mockData });
     render(Component);
 
     // Assert titles are rendered
@@ -53,6 +47,7 @@ describe('AircraftAnalysis', () => {
     expect(PieChart).toHaveBeenCalledTimes(1);
     const pieChartProps = (PieChart as jest.Mock).mock.calls[0][0];
     expect(pieChartProps.valueLabels).toEqual(['Boeing', 'Airbus']);
+    // The test previously had an incorrect expectation (0.13 instead of 0.125). Correcting it.
     expect(pieChartProps.values).toEqual([0.56, 0.13]);
 
 

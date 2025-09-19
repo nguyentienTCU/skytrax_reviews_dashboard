@@ -1,15 +1,16 @@
 import React from "react";
 import BarGraph from "@/components/custom-ui/BarChart";
 import PieGraph from "@/components/custom-ui/PieChart";
-import { getCustomerAnalysis } from "@/lib/getData/getCustomerAnalysis";
 
-const CustomerAnalysis = async () => {
+import { CustomerAnalysisData } from "@/type/CustomerAnalysisData";
+
+const CustomerAnalysis = async ({ data }: { data: CustomerAnalysisData }) => {
   const {
     reviewsByCountry,
     verifiedAndUnverifiedReviews,
     aircraftSeatTypePercentage,
     travellerTypePercentage,
-  } = await getCustomerAnalysis();
+  } = data;
 
   const roundedVerifiedAndUnverifiedReviews = {
     verified: Number(verifiedAndUnverifiedReviews.verified.toFixed(2)),

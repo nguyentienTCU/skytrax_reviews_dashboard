@@ -1,6 +1,6 @@
 // This file will contain functions to pre-process the data from Snowflake.
 // Each function will correspond to a specific part of the dashboard.
-import { Review } from "../../type/Review";
+import { Review } from "./../type/Review";
 
 export function preProcessDataSummary(data: Review[]) {
 	// Logic from getDataSummary.ts
@@ -689,96 +689,95 @@ export function preProcessCustomerAnalysis(reviews: Review[]) {
 }
 
 export function preProcessReviewTextAnalysis(reviews: Review[]) {
-	const getSampleReviews = (reviews: Review[]) => {
-		const sampleReviews = {
-			bad: {
-				reviewText: "",
-				originCity: "",
-				destinationCity: "",
-				aircraftModel: "",
-				seatType: "",
-				averageRating: 0,
-			},
-			medium: {
-				reviewText: "",
-				originCity: "",
-				destinationCity: "",
-				aircraftModel: "",
-				seatType: "",
-				averageRating: 0,
-			},
-			good: {
-				reviewText: "",
-				originCity: "",
-				destinationCity: "",
-				aircraftModel: "",
-				seatType: "",
-				averageRating: 0,
-			},
-		};
+  type Band = "bad" | "medium" | "good";
 
-		for (const review of reviews) {
-			const ratingBand = review.RATING_BAND.toLowerCase() as "bad" | "medium" | "good";
-			if (
-				sampleReviews[ratingBand].reviewText === "" &&
-				review.REVIEW_TEXT &&
-				review.REVIEW_TEXT !== "Unknown" &&
-				review.ORIGIN_CITY &&
-				review.ORIGIN_CITY !== "Unknown" &&
-				review.DESTINATION_CITY &&
-				review.DESTINATION_CITY !== "Unknown" &&
-				review.AIRCRAFT_MODEL &&
-				review.AIRCRAFT_MODEL !== "Unknown" &&
-				review.SEAT_TYPE &&
-				review.SEAT_TYPE !== "Unknown" &&
-				review.RATING_BAND &&
-				review.RATING_BAND !== "Unknown" &&
-				review.AVERAGE_RATING
-			) {
-				sampleReviews[ratingBand] = {
-					reviewText: review.REVIEW_TEXT,
-					originCity: review.ORIGIN_CITY,
-					destinationCity: review.DESTINATION_CITY,
-					aircraftModel: review.AIRCRAFT_MODEL,
-					seatType: review.SEAT_TYPE,
-					averageRating: review.AVERAGE_RATING,
-				};
-			}
+  const normalizeBand = (v: unknown): Band | null => {
+    const s = String(v ?? "").trim().toLowerCase();
+    if (s === "bad" || s === "medium" || s === "good") return s;
+    return null;
+  };
 
-			if (
-				sampleReviews.bad.reviewText !== "" &&
-				sampleReviews.medium.reviewText !== "" &&
-				sampleReviews.good.reviewText !== ""
-			) {
-				break;
-			}
-		}
+  const isKnown = (v: unknown) => {
+    // treat "", null, undefined, "Unknown" as not known
+    if (v == null) return false;
+    const s = String(v).trim();
+    return s.length > 0 && s !== "Unknown";
+  };
 
-		return sampleReviews;
-	};
+  const getSampleReviews = (reviews: Review[]) => {
+    const sampleReviews: Record<Band, {
+      reviewText: string;
+      originCity: string;
+      destinationCity: string;
+      aircraftModel: string;
+      seatType: string;
+      averageRating: number;
+    }> = {
+      bad:    { reviewText: "", originCity: "", destinationCity: "", aircraftModel: "", seatType: "", averageRating: 0 },
+      medium: { reviewText: "", originCity: "", destinationCity: "", aircraftModel: "", seatType: "", averageRating: 0 },
+      good:   { reviewText: "", originCity: "", destinationCity: "", aircraftModel: "", seatType: "", averageRating: 0 },
+    };
 
-	const getRatingBandsTypeCount = (reviews: Review[]) => {
-		const totalReviews = reviews.length;
-		const ratingBandsType: number[] = [
-			(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "bad")
-				.length /
-				totalReviews) *
-				100,
-			(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "medium")
-				.length /
-				totalReviews) *
-				100,
-			(reviews.filter((review) => review.RATING_BAND.toLowerCase() === "good")
-				.length /
-				totalReviews) *
-				100,
-		];
+    for (const review of reviews ?? []) {
+      if (!review) continue;
 
-		return ratingBandsType;
-	};
+      const ratingBand = normalizeBand((review as any).RATING_BAND);
+      if (!ratingBand) continue; // skip unknown/new buckets
 
-	return {
-		sampleReviews: getSampleReviews(reviews),
-		ratingBandsTypeCount: getRatingBandsTypeCount(reviews),
-	};
+      if (
+        sampleReviews[ratingBand].reviewText === "" &&
+        isKnown((review as any).REVIEW_TEXT) &&
+        isKnown((review as any).ORIGIN_CITY) &&
+        isKnown((review as any).DESTINATION_CITY) &&
+        isKnown((review as any).AIRCRAFT_MODEL) &&
+        isKnown((review as any).SEAT_TYPE) &&
+        isKnown((review as any).RATING_BAND) &&
+        (review as any).AVERAGE_RATING != null
+      ) {
+        sampleReviews[ratingBand] = {
+          reviewText: (review as any).REVIEW_TEXT,
+          originCity: (review as any).ORIGIN_CITY,
+          destinationCity: (review as any).DESTINATION_CITY,
+          aircraftModel: (review as any).AIRCRAFT_MODEL,
+          seatType: (review as any).SEAT_TYPE,
+          averageRating: Number((review as any).AVERAGE_RATING),
+        };
+      }
+
+      if (
+        sampleReviews.bad.reviewText &&
+        sampleReviews.medium.reviewText &&
+        sampleReviews.good.reviewText
+      ) break;
+    }
+
+    return sampleReviews;
+  };
+
+  const getRatingBandsTypeCount = (reviews: Review[]) => {
+    let total = 0;
+    const counts: Record<Band, number> = { bad: 0, medium: 0, good: 0 };
+
+    for (const r of reviews ?? []) {
+      if (!r) continue;
+      const band = normalizeBand((r as any).RATING_BAND);
+      if (band) {
+        counts[band] += 1;
+        total += 1;
+      }
+    }
+
+    if (total === 0) return [0, 0, 0];
+
+    return [
+      (counts.bad / total) * 100,
+      (counts.medium / total) * 100,
+      (counts.good / total) * 100,
+    ];
+  };
+
+  return {
+    sampleReviews: getSampleReviews(reviews),
+    ratingBandsTypeCount: getRatingBandsTypeCount(reviews),
+  };
 }

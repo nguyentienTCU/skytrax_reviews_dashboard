@@ -1,11 +1,14 @@
+import { useAirline } from "@/app/context/AirlineContext";
 import { getFileContentFroms3Bucket } from "./s3-utils";
 
-export async function getJsonData(fileName: string) {
-  try {
-    const jsonContent = await getFileContentFroms3Bucket("british-airways--db-bucket", `data/${fileName}`);
-    return JSON.parse(jsonContent);
-  } catch (error) {
-    console.error("Error parsing JSON data:", error);
-    throw error;
-  }
+const BUCKET = process.env.S3_BUCKET ?? ""; 
+
+export async function getJsonData(fileName: string, airline: string) {
+  if (!BUCKET) throw new Error("S3_BUCKET environment variable is not set");
+
+  const key = `${airline}data/${fileName}`;
+  
+
+  const jsonText = await getFileContentFroms3Bucket(BUCKET, key);
+  return JSON.parse(jsonText);
 }
