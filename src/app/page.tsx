@@ -16,7 +16,7 @@ import { getAirlinesIndex, getJsonData } from "@/lib/data";
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: Promise<{ airline?: string | string[] }> ;
+  searchParams?: Promise<{ airline?: string | ''}> ;
 }) {
   const airlines = await getAirlinesIndex();
   if (!airlines.length) {
@@ -26,9 +26,10 @@ export default async function Home({
   const defaultSlug = "british-airways";
   const isBritishAirwaysAvailable = airlines.some(a => a.slug === defaultSlug);
 
+  const airline = (await searchParams)?.airline;
   const currentSlug =
-    searchParams?.airline && airlines.some(a => a.slug === searchParams.airline)
-      ? searchParams.airline!
+    airline && airlines.some(a => a.slug === airline)
+      ? airline!
       : isBritishAirwaysAvailable
       ? defaultSlug
       : airlines[0].slug;
