@@ -1,10 +1,11 @@
 import React from "react";
 import PieGraph from "@/components/custom-ui/PieChart";
 
-import { getReviewTextAnalysis } from "@/lib/getData/getReviewTextAnalysis";
 
-const ReviewTextAnalysis = async () => {
-	const { sampleReviews, ratingBandsTypeCount } = await getReviewTextAnalysis();
+import { ReviewTextAnalysisData } from "@/type/ReviewTextAnalysisData";
+
+const ReviewTextAnalysis = async ({ data }: { data: ReviewTextAnalysisData }) => {
+	const { sampleReviews, ratingBandsTypeCount } = data;
 
 	const roundedRatingBandsTypeCount = ratingBandsTypeCount.map((review) => (Number(review.toFixed(2))));
 	return (

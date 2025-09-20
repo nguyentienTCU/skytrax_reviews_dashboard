@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "fetch-data": "ts-node src/lib/data-fetcher.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.850.0",

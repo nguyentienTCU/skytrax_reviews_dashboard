@@ -1,10 +1,10 @@
 import React from "react";
 import BarGraph from "@/components/custom-ui/BarChart";
-import { getRouteAnalysis } from "@/lib/getData/getRouteAnalysis";
 
-const RouteAnalysis = async () => {
-	const { topOriginCities, topDestinationCities, topRoutes } =
-		await getRouteAnalysis();
+import { RouteAnalysisData } from "@/type/RouteAnalysisData";
+
+const RouteAnalysis = async ({ data }: { data: RouteAnalysisData }) => {
+	const { topOriginCities, topDestinationCities, topRoutes } = data;
 	return (
 		<div className="card bg-white dark:bg-gray-800 text-gray-700 dark:text-white">
 			<h2 className="text-xl font-bold mb-4 ">Route Analysis</h2>

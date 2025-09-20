@@ -1,14 +1,15 @@
 import React from "react";
-import { getDataSummary } from "@/lib/getData/getDataSummary";
-import StatCard from "./StatCard";
 
-const DataSummary = async () => {
+import StatCard from "./StatCard";
+import { DataSummaryType } from "@/type/DataSummaryType";
+
+const DataSummary = async (props: DataSummaryType) => {
 	const {
 		totalReviews,
 		totalVerifiedReviews,
 		totalAircraftModels,
 		totalCountries,
-	} = await getDataSummary();
+	} = props;
 
 	const stats = [
 		{

@@ -1,5 +1,6 @@
 export type Review = {
   REVIEW_ID: number;
+  AIRLINE: string;
   CUSTOMER_NAME: string;
   NATIONALITY: string | null;
   NUMBER_OF_FLIGHTS: number | null;

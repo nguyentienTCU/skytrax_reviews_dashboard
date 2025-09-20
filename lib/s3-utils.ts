@@ -1,8 +1,19 @@
 import { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
-import { getFromCache, saveToCache } from "./dataCache";
+import { NodeHttpHandler } from "@smithy/node-http-handler";
+import { Agent as HttpsAgent } from "https";
 import { Readable } from "stream";
 
-const s3 = new S3Client({ region: process.env.AWS_REGION });
+console.log("[S3] Initializing S3 client…");
+
+const s3 = new S3Client({ 
+    region: process.env.AWS_REGION,
+    requestHandler: new NodeHttpHandler({
+        httpsAgent: new HttpsAgent({ keepAlive: true, maxSockets: 256 }),
+        socketAcquisitionWarningTimeout: 30000,
+        connectionTimeout: 5000,
+        socketTimeout: 300000,
+    })
+ });
 
 export async function uploadFileToS3Bucket(file: String, bucketName: string, key: string): Promise<void> {
     try {
@@ -18,24 +29,16 @@ export async function uploadFileToS3Bucket(file: String, bucketName: string, key
 }
 
 export async function getFileContentFroms3Bucket(bucketName: string, key: string): Promise<string> {
-    const cacheKey = `${bucketName}/${key}`;
-    const cacheData = getFromCache(cacheKey);
-    if (cacheData) {
-        return cacheData;
-    }
-    
+    console.log(`[S3] Fetching s3://${bucketName}/${key}`);    
     const command = new GetObjectCommand({
         Bucket: bucketName,
         Key: key,
     });
     const response = await s3.send(command);
-
     if (!response.Body || !(response.Body instanceof Readable)) {
         throw new Error("No body in response");
     }
-
     const content = await streamToString(response.Body);
-    saveToCache(cacheKey, content);
     return content;
 }
 
