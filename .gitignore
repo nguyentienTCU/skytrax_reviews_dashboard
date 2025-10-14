@@ -1,62 +1,111 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
 node_modules/
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+package-lock.json
+.pnpm-debug.log
+.env
+.env.*
+!.env.example
 
-# env files (can opt-in for committing if needed)
-.env*
+# Next.js build output
+.next/
+out/
 
-# vercel
-.vercel
+# Express.js build or compiled files
+dist/
+build/
+coverage/
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Logs
+logs/
+*.log
+*.log.*
+debug.log
 
-# Service account credentials
-lib/service-account.json
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-#terraform
-**/.terraform/
+# Editor and OS junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# ---------------------------------------------------------
+# Terraform
+# ---------------------------------------------------------
+# Local .terraform directories
+**/.terraform/*
+
+# Terraform state files
 *.tfstate
 *.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Ignore override files since they are usually local
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform plan files
+*.plan
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
 *.tfvars
 *.tfvars.json
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-.terraformrc
-terraform.rc
-crash.log
-crash.*.log
+*.plan
 
+# ---------------------------------------------------------
+# Docker / Deployment
+# ---------------------------------------------------------
+.docker/
+docker-compose.override.yml
+*.tar
 
-snowflake.log
+# ---------------------------------------------------------
+# Other environments
+# ---------------------------------------------------------
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# AWS credentials or config
+.aws/
+terraform.tfvars
+
+# ---------------------------------------------------------
+# Optional: Monorepo build cache
+# ---------------------------------------------------------
+.cache/
+.vercel/
