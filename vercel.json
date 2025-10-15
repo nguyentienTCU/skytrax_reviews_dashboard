@@ -1,8 +1,7 @@
 {
-    "crons": [
-        {
-            "path": "/api/cron/update-data",
-            "schedule": "0 7 * * 1"
-        }
-    ]
+  "functions": {
+    "backend/**/*.js": {
+      "includeFiles": "backend/queries/**"
+    }
+  }
 }
