@@ -1,5 +1,5 @@
 {
-  "name": "british_airways_dashboard_website",
+  "name": "skytrax-reviews-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@google-cloud/storage": "^7.16.0",
     "@types/papaparse": "^5.3.15",
-    "chart.js": "^4.4.9",
+    "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dotenv": "^16.5.0",
     "next": "^15.4.4",
