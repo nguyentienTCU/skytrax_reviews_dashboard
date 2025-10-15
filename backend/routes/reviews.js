@@ -1,14 +1,25 @@
 import express from "express";
 import snowflakeConnection from "../utils/snowflakeClient.js";
 import { deslugifyAirline } from "../utils/slugConverter.js";
-import { loadSQL } from "../utils/loadSQL.js";
+import { query as summaryQuery } from "../queries/summary.js";
+import { query as monthlyMetricsQuery } from "../queries/monthly_metrics.js";
+import { query as reviewsOverTimeQuery } from "../queries/reviews_over_time.js";
+import { query as avgRecommendationQuery } from "../queries/avg_recommendation.js";
+import { query as avgScoreQuery } from "../queries/avg_score.js";
+import { query as avgMoneyValueQuery } from "../queries/avg_money_value.js";
+import { query as allServicesQuery } from "../queries/all_services.js";
+import { query as aircraftAnalysisQuery } from "../queries/aircraft_analysis.js";
+import { query as routeAnalysisQuery } from "../queries/route_analysis.js";
+import { query as customerAnalysisQuery } from "../queries/customer_analysis.js";
+import { query as reviewTextAnalysisQuery } from "../queries/review_text_analysis.js";
+import { query as lastRefreshDateQuery } from "../queries/last_refresh_date.js";
+import { query as allAirlinesQuery } from "../queries/all_airlines.js";
+
 
 const router = express.Router();
 
-async function querySnowflake(sqlFile, binds = []) {
+async function querySnowflake(sqlText, binds = []) {
   return new Promise((resolve, reject) => {
-    const sqlText = loadSQL(sqlFile);
-
     snowflakeConnection.execute({
       sqlText,
       binds,
@@ -20,21 +31,32 @@ async function querySnowflake(sqlFile, binds = []) {
   });
 }
 
+router.get("/allAirlines", async (req, res) => {
+  try {
+    const rows = await querySnowflake(allAirlinesQuery);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query failed for get all airlines:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 router.get("/:airlineSlug/dataSummary", async (req, res) => {
   const { airlineSlug } = req.params;
   const airline = deslugifyAirline(airlineSlug);
 
-  const response = await querySnowflake("./queries/summary.sql", [airline]);
+  const response = await querySnowflake(summaryQuery, [airline]);
   res.json(response[0] || {});
 });
 
 router.get("/:airlineSlug/monthlyMetrics/:mode", async (req, res) => {
   try {
-    const { airlineSlug } = req.params;
+    const { airlineSlug, mode } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/monthly_metrics.sql", [
+    const rows = await querySnowflake(monthlyMetricsQuery, [
       airline,
-      "mode",
+      mode,
     ]);
     const row = rows[0]
     res.json({
@@ -75,11 +97,11 @@ router.get("/:airlineSlug/timeBasedAnalysis", async (req, res) => {
       avgMoneyValue,
       allServices,
     ] = await Promise.all([
-      querySnowflake("./queries/reviews_over_time.sql", [airline]),
-      querySnowflake("./queries/avg_recommendation.sql", [airline]),
-      querySnowflake("./queries/avg_score.sql", [airline]),
-      querySnowflake("./queries/avg_money_value.sql", [airline]),
-      querySnowflake("./queries/all_services.sql", [airline]),
+      querySnowflake(reviewsOverTimeQuery, [airline]),
+      querySnowflake(avgRecommendationQuery, [airline]),
+      querySnowflake(avgScoreQuery, [airline]),
+      querySnowflake(avgMoneyValueQuery, [airline]),
+      querySnowflake(allServicesQuery, [airline]),
     ]);
 
     let allServicesJson = allServices[0]?.allServices || {};
@@ -101,7 +123,7 @@ router.get("/:airlineSlug/aircraftAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/aircraft_analysis.sql", [
+    const rows = await querySnowflake(aircraftAnalysisQuery, [
       airline,
     ]);
     const row = rows?.[0] || {};
@@ -116,7 +138,7 @@ router.get("/:airlineSlug/routeAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/route_analysis.sql", [airline]);
+    const rows = await querySnowflake(routeAnalysisQuery, [airline]);
     const row = rows?.[0] || {};
     res.json(row);
   }
@@ -130,7 +152,7 @@ router.get("/:airlineSlug/customerAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/customer_analysis.sql", [airline]);
+    const rows = await querySnowflake(customerAnalysisQuery, [airline]);
     const row = rows?.[0] || {};
     res.json(row);
   }
@@ -144,7 +166,7 @@ router.get("/:airlineSlug/reviewTextAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/review_text_analysis.sql", [airline]);
+    const rows = await querySnowflake(reviewTextAnalysisQuery, [airline]);
     const row = rows?.[0] || {};
     res.json(row);
   }
@@ -158,7 +180,7 @@ router.get("/:airlineSlug/lastRefreshDate", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake("./queries/last_refresh_date.sql", [airline]);
+    const rows = await querySnowflake(lastRefreshDateQuery, [airline]);
     const row = rows?.[0] || {};
     res.json(row);
   }
@@ -167,16 +189,5 @@ router.get("/:airlineSlug/lastRefreshDate", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 })
-
-router.get("/allAirlines", async (req, res) => {
-  try {
-    const rows = await querySnowflake("./queries/all_airlines.sql");
-    res.json(rows);
-  } catch (err) {
-    console.error("Query failed for get all airlines:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
 
 export default router;

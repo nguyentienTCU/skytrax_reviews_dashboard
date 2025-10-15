@@ -1,3 +1,4 @@
+export const query = `
 WITH
 params AS (
   SELECT
@@ -106,3 +107,4 @@ SELECT
   -- Month label based on CURRENT_DATE() (to mirror your JS)
   TO_CHAR(CURRENT_DATE(), 'MMMM') || ' - ' || TO_CHAR(CURRENT_DATE(), 'YYYY') AS "month"
 FROM agg a;
+`

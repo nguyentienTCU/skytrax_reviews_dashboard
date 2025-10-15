@@ -1,3 +1,4 @@
+export const query = `
 -- :1 = airline (compare by name; switch to airline_slug if needed)
 
 WITH base AS (
@@ -124,3 +125,4 @@ FROM country_json c
 CROSS JOIN verified_json v
 CROSS JOIN seat_json s
 CROSS JOIN trav_json t;
+`

@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "backend/**/*.js": {
-      "includeFiles": "queries/**"
-    }
-  }
-}
