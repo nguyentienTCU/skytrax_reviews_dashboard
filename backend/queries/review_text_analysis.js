@@ -1,3 +1,4 @@
+export const query = `
 -- :1 = airline (compare by name; switch to airline_slug if you have it)
 
 WITH base AS (
@@ -134,3 +135,4 @@ SELECT
   p.arr AS "ratingBandsTypeCount"
 FROM sample_reviews_json s
 CROSS JOIN band_pct_json p;
+`

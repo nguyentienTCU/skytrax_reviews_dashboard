@@ -1,3 +1,5 @@
+export const query = `
+
 -- :1 = airline
 
 WITH base AS (
@@ -81,3 +83,4 @@ per_service_kv AS (        -- key/value rows to avoid identifier ambiguity
 SELECT
   OBJECT_AGG(k, v) AS "allServices"
 FROM per_service_kv;
+`;

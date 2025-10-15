@@ -1,3 +1,4 @@
+export const query = `
 WITH base AS (
   SELECT
     ds.cal_year                      AS year,
@@ -22,3 +23,4 @@ SELECT
 FROM base
 GROUP BY year
 ORDER BY year;
+`;

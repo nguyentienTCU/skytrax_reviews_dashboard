@@ -1,3 +1,4 @@
+export const query = `
 -- :1 = airline (compare to name; switch to airline_slug if needed)
 
 WITH base AS (
@@ -86,3 +87,4 @@ SELECT
 FROM origin_json o
 CROSS JOIN dest_json d
 CROSS JOIN routes_json r;
+`

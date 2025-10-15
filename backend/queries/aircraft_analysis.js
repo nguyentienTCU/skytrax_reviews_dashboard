@@ -1,5 +1,5 @@
+export const query = `
 -- :1 = airline (compare by name; switch to airline_slug if needed)
-
 WITH base AS (
   SELECT
     a.aircraft_manufacturer,
@@ -111,3 +111,4 @@ SELECT
   d.arr AS "aircraftModels"
 FROM manuf_json m
 CROSS JOIN model_json d;
+`;

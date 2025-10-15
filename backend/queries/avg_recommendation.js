@@ -1,3 +1,4 @@
+export const query = `
 WITH base AS (
   SELECT
     ds.cal_year                      AS year,
@@ -17,8 +18,10 @@ WITH base AS (
     AND LOWER(f.airline) = LOWER(:1)     -- or airline_slug = :1
 )
 SELECT
-  year                          AS "year",
-  ROUND(AVG(average_rating), 2) AS "averageScore"
+  year                                          AS "year",
+  /* percentage of rows where recommended = true */
+  ROUND(100.0 * AVG(IFF(recommended, 1, 0)), 2) AS "percentage"
 FROM base
 GROUP BY year
 ORDER BY year;
+`
