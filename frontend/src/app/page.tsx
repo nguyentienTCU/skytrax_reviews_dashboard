@@ -11,11 +11,10 @@ import ReviewTextAnalysis from "@/components/ReviewTextAnalysis/ReviewTextAnalys
 import Footer from "@/components/custom-ui/Footer";
 import AirlineSelectorClient from "@/components/AirlineSelector";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { airline: string | string[] };
-}) {
+type SearchParams = { airline?: string | string[] };
+
+
+export default async function Home({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const defaultSlug = "british-airways";
   const { airline } = await searchParams;
   const currentSlug =

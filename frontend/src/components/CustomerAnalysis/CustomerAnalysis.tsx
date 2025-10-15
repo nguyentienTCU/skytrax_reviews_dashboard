@@ -11,8 +11,6 @@ type Props = {
   airlineSlug: string;
 }
 
-import { CustomerAnalysisData } from "@/types/CustomerAnalysisData";
-
 const CustomerAnalysis: React.FC<Props> = ({ airlineSlug }) => {
   const { data, error, isLoading, mutate } = useSWR<CustomerAnalysis>(
     airlineSlug ? ["customer_analysis", airlineSlug] : null,

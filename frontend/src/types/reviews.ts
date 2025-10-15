@@ -212,7 +212,7 @@ export type AllServices = {
     }
 }
 
-export type TimebasedAnalysisData = {
+export type TimebasedAnalysis = {
   reviewsOverTime: ReviewsOverTime[];
   avgRecommendation: AvgRecommendation[];
   avgScore: AvgScore[];

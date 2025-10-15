@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import MetricCard from './MetricCard';
-import type { MonthlyMetricsData } from '@/types/MonthlyMetricsData';
+import type { MonthlyMetrics } from '@/types/reviews';
 import { getMonthlyMetrics } from '@/lib/reviewsApi';
 
 type CompareModeApi = 'previous-month' | 'previous-year';
@@ -49,7 +49,7 @@ const pretty = (m: CompareModeApi) =>
 const MonthlyMetrics: React.FC<Props> = ({ airlineSlug }) => {
   const [compareWith, setCompareWith] = useState<CompareModeApi>('previous-month');
 
-  const { data, error, isLoading, mutate, isValidating } = useSWR<MonthlyMetricsData>(
+  const { data, error, isLoading, mutate, isValidating } = useSWR<MonthlyMetrics>(
     airlineSlug ? ['monthly_metrics', airlineSlug, compareWith] : null,
     () => getMonthlyMetrics(airlineSlug, compareWith),
     {
