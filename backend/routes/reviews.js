@@ -14,7 +14,7 @@ import { query as customerAnalysisQuery } from "../queries/customer_analysis.js"
 import { query as reviewTextAnalysisQuery } from "../queries/review_text_analysis.js";
 import { query as lastRefreshDateQuery } from "../queries/last_refresh_date.js";
 import { query as allAirlinesQuery } from "../queries/all_airlines.js";
-
+import { redis, getOrSetCache } from '../utils/cache.js';
 
 const router = express.Router();
 
@@ -33,7 +33,8 @@ async function querySnowflake(sqlText, binds = []) {
 
 router.get("/allAirlines", async (req, res) => {
   try {
-    const rows = await querySnowflake(allAirlinesQuery);
+    const rows = await getOrSetCache("allAirlines", 3600, () => 
+      querySnowflake(allAirlinesQuery));
     res.json(rows);
   } catch (err) {
     console.error("Query failed for get all airlines:", err);
@@ -42,24 +43,36 @@ router.get("/allAirlines", async (req, res) => {
 });
 
 
-router.get("/:airlineSlug/dataSummary", async (req, res) => {
-  const { airlineSlug } = req.params;
-  const airline = deslugifyAirline(airlineSlug);
-
-  const response = await querySnowflake(summaryQuery, [airline]);
-  res.json(response[0] || {});
+router.get('/:airlineSlug/dataSummary', async (req, res) => {
+  try {
+    const airline = deslugifyAirline(req.params.airlineSlug);
+    const data = await getOrSetCache(
+      `dataSummary:${airline}`,
+      3600,
+      async () => {
+        const rows = await querySnowflake(summaryQuery, [airline]);
+        return rows[0] || {};
+      }
+    );
+    res.json(data);
+  } catch (err) {
+    console.error('get data summary:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.get("/:airlineSlug/monthlyMetrics/:mode", async (req, res) => {
   try {
     const { airlineSlug, mode } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(monthlyMetricsQuery, [
-      airline,
-      mode,
-    ]);
-    const row = rows[0]
-    res.json({
+    const data = await getOrSetCache(`monthlyMetrics:${airline}:${mode}`, 3600,  async () => {
+    const rows = await querySnowflake(monthlyMetricsQuery, [airline, mode,]);
+    const row = rows?.[0];
+    if (!row) {
+      return {}
+    };
+
+    return {
       recommendationPercentage: {
         currentPercentage: row.currentPercentage,
         percentageChange: row.percentageChange,
@@ -78,7 +91,8 @@ router.get("/:airlineSlug/monthlyMetrics/:mode", async (req, res) => {
       },
       month: row.month
       
-    } || {});
+    }});
+    res.json(data);
   } catch (err) {
     console.error("Query failed for get monthly metrics:", err);
     res.status(500).json({ error: err.message });
@@ -89,8 +103,8 @@ router.get("/:airlineSlug/timeBasedAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-
-    const [
+    const data = await getOrSetCache(`timeBasedAnalysis:${airline}`, 3600, async () => {
+      const [
       reviewsOverTime,
       avgRecommendation,
       avgScore,
@@ -103,16 +117,17 @@ router.get("/:airlineSlug/timeBasedAnalysis", async (req, res) => {
       querySnowflake(avgMoneyValueQuery, [airline]),
       querySnowflake(allServicesQuery, [airline]),
     ]);
-
-    let allServicesJson = allServices[0]?.allServices || {};
-
-    res.json({
+    return {
       reviewsOverTime,
       avgRecommendation,
       avgScore,
       avgMoneyValue,
-      allServices: allServicesJson,
+      allServices: allServices[0]?.allServices || {},
+    }
+
     });
+
+    return res.json(data);
   } catch (err) {
     console.error("Query failed for get time based analysis:", err);
     res.status(500).json({ error: err.message });
@@ -123,11 +138,13 @@ router.get("/:airlineSlug/aircraftAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(aircraftAnalysisQuery, [
+    const data = await getOrSetCache(`aircraftAnalsis:${airline}`, 3600, async () => {
+      const rows = await querySnowflake(aircraftAnalysisQuery, [
       airline,
     ]);
-    const row = rows?.[0] || {};
-    res.json(row);
+      return rows?.[0] || {};
+    })
+    res.json(data);
   } catch (err) {
     console.error("Query failed for get aircraft analysis:", err);
     res.status(500).json({ error: err.message });
@@ -137,13 +154,15 @@ router.get("/:airlineSlug/aircraftAnalysis", async (req, res) => {
 router.get("/:airlineSlug/routeAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
-    const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(routeAnalysisQuery, [airline]);
-    const row = rows?.[0] || {};
-    res.json(row);
+    const airline = await deslugifyAirline(airlineSlug);
+    const data = await getOrSetCache(`routeAnalysis:${airline}`, 3600, async () => {
+      const rows = await querySnowflake(routeAnalysisQuery, [airline]);
+      return rows?.[0] || {};
+    })
+    res.json(data);
   }
   catch (err) {
-    console.error("Query failed for get route analysis:", err);
+    console.error("=et route analysis:", err);
     res.status(500).json({ error: err.message });
   }
 })
@@ -152,12 +171,14 @@ router.get("/:airlineSlug/customerAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(customerAnalysisQuery, [airline]);
-    const row = rows?.[0] || {};
-    res.json(row);
+    const data = await getOrSetCache(`customerAnalysis:${airline}`, 3600, async () => {
+      const rows = await querySnowflake(customerAnalysisQuery, [airline]);
+      return rows?.[0] || {};
+    })
+    res.json(data);
   }
   catch (err) {
-    console.error("Query failed for get customer analysis:", err);
+    console.error("get customer analysis:", err);
     res.status(500).json({ error: err.message });
   }
 })
@@ -166,12 +187,14 @@ router.get("/:airlineSlug/reviewTextAnalysis", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(reviewTextAnalysisQuery, [airline]);
-    const row = rows?.[0] || {};
-    res.json(row);
+    const data = await getOrSetCache(`reviewtextanalysis:${airline}`, 3600, async () => {
+      const rows = await querySnowflake(reviewTextAnalysisQuery, [airline]);
+      return rows?.[0] || {};
+    })
+    res.json(data);
   }
   catch (err) {
-    console.error("Query failed for get review test analysis:", err);
+    console.error("get review test analysis:", err);
     res.status(500).json({ error: err.message });
   }
 })
@@ -180,9 +203,14 @@ router.get("/:airlineSlug/lastRefreshDate", async (req, res) => {
   try {
     const { airlineSlug } = req.params;
     const airline = deslugifyAirline(airlineSlug);
-    const rows = await querySnowflake(lastRefreshDateQuery, [airline]);
-    const row = rows?.[0] || {};
-    res.json(row);
+    const data = await getOrSetCache(`lastRefreshDate:${airline}`, 3600, async () => {
+      const rows = await querySnowflake(lastRefreshDateQuery, [airline]);
+      return rows?.[0] || {};
+    })
+    res.json(data);
+    // const rows = await querySnowflake(lastRefreshDateQuery, [airline]);
+    // const row = rows?.[0] || {};
+    // res.json(row);
   }
   catch (err) {
     console.error("Query failed for get last refresh date:", err);
