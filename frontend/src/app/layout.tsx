@@ -3,6 +3,7 @@ import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SidebarWrapper from "@/components/custom-ui/Sidebar";
+import Chatbot from "@/components/custom-ui/Chatbot";
 import { ThemeColorProvider } from "./context/ThemeContext";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import { AirlineProvider } from "./context/AirlineContext";
@@ -40,6 +41,7 @@ export default function RootLayout({
           <ThemeColorProvider>
             <AirlineProvider>
               <SidebarWrapper>{children}</SidebarWrapper>
+              <Chatbot />
             </AirlineProvider>
           </ThemeColorProvider>
         </ThemeRegistry>

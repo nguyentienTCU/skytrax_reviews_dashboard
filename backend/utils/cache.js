@@ -1,7 +1,6 @@
 import { Redis } from "@upstash/redis";
 
 export const redis = Redis.fromEnv();
-
 /**
  * Cache-aside helper.
  * - key: string cache key
