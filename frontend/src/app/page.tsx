@@ -1,13 +1,13 @@
 // app/page.tsx
 import Header from "@/components/custom-ui/Header";
-import DashboardInfo from "@/components/DashboardInfo/DashboardInfo";
-import MonthlyMetrics from "@/components/MonthlyMetrics/MonthlyMetrics";
-import DataSummary from "@/components/DataSummary/DataSummary";
-import TimeAnalysis from "@/components/Time-basedAnalysis/TimeAnalysis";
-import AircraftAnalysis from "@/components/AircraftAnalysis/AircraftAnalysis";
-import RouteAnalysis from "@/components/RouteAnalysis/RouteAnalysis";
-import CustomerAnalysis from "@/components/CustomerAnalysis/CustomerAnalysis";
-import ReviewTextAnalysis from "@/components/ReviewTextAnalysis/ReviewTextAnalysis";
+import DashboardInfo from "@/components/DashboardInfo";
+import MonthlyMetrics from "@/components/MonthlyMetrics";
+import DataSummary from "@/components/DataSummary";
+import TimeAnalysis from "@/components/TimeAnalysis";
+import AircraftAnalysis from "@/components/AircraftAnalysis";
+import RouteAnalysis from "@/components/RouteAnalysis";
+import CustomerAnalysis from "@/components/CustomerAnalysis";
+import ReviewTextAnalysis from "@/components/ReviewTextAnalysis";
 import Footer from "@/components/custom-ui/Footer";
 import AirlineSelectorClient from "@/components/AirlineSelector";
 
