@@ -45,7 +45,21 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
     [airlines]
   );
 
-  const top = useMemo(() => sorted.slice(0, 6), [sorted]);
+  const top_airlines = [
+    { airline: "American Airlines", slug: "american-airlines" },
+    { airline: "Delta Air Lines", slug: "delta-air-lines" },
+    { airline: "United Airlines", slug: "united-airlines" },
+    { airline: "Emirates", slug: "emirates" },
+    { airline: "British Airways", slug: "british-airways" },
+    { airline: "Lufthansa", slug: "lufthansa" },
+    { airline: "Southwest Airlines", slug: "southwest-airlines" },
+  ];
+
+  const top = useMemo(() => {
+    const current = sorted.find((a) => a.slug == airlineSlug);
+    if (!current) return top_airlines;
+    return [current, ...top_airlines.filter((a) => a.slug !== airlineSlug)];
+  }, [sorted, airlineSlug]);
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
