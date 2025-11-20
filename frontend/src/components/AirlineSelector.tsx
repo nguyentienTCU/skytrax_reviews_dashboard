@@ -55,8 +55,6 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
     { airline: "Southwest Airlines", slug: "southwest-airlines" },
   ];
 
-
-
   const top = useMemo(() => {
     const current = sorted.find((a) => a.slug == airlineSlug);
     if (!current) return top_airlines;
