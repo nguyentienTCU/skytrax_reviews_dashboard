@@ -24,7 +24,7 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
- 
+
   const { data, error, isLoading, mutate } = useSWR(
     "all_airlines",
     getAllAirlines
@@ -45,7 +45,23 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
     [airlines]
   );
 
-  const top = useMemo(() => sorted.slice(0, 6), [sorted]);
+  const top_airlines = [
+    { airline: "American Airlines", slug: "american-airlines" },
+    { airline: "Delta Air Lines", slug: "delta-air-lines" },
+    { airline: "United Airlines", slug: "united-airlines" },
+    { airline: "Emirates", slug: "emirates" },
+    { airline: "British Airways", slug: "british-airways" },
+    { airline: "Lufthansa", slug: "lufthansa" },
+    { airline: "Southwest Airlines", slug: "southwest-airlines" },
+  ];
+
+
+
+  const top = useMemo(() => {
+    const current = sorted.find((a) => a.slug == airlineSlug);
+    if (!current) return top_airlines;
+    return [current, ...top_airlines.filter((a) => a.slug !== airlineSlug)];
+  }, [sorted, airlineSlug]);
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
@@ -84,7 +100,9 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
     const sp = new URLSearchParams(searchParams?.toString());
     if (airlineSlug) sp.set("airline", airlineSlug);
     try {
-      await navigator.clipboard.writeText(`${location.origin}/?${sp.toString()}`);
+      await navigator.clipboard.writeText(
+        `${location.origin}/?${sp.toString()}`
+      );
     } catch {}
   };
 
@@ -161,14 +179,21 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
                 setOpen(true);
               }}
               onFocus={() => setOpen(true)}
-              placeholder="Search airline (name or slug)…"
+              placeholder="Search airlines..."
               className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
               aria-controls="airline-results"
               aria-expanded={open}
               aria-haspopup="listbox"
             />
             <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <circle cx="11" cy="11" r="7" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
