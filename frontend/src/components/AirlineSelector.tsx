@@ -53,6 +53,7 @@ export default function AirlineSelectorClient({ airlineSlug }: Props) {
     { airline: "British Airways", slug: "british-airways" },
     { airline: "Lufthansa", slug: "lufthansa" },
     { airline: "Southwest Airlines", slug: "southwest-airlines" },
+    { airline: "Vietnam Airlines", slug: "vietnam-airlines" },
   ];
 
   const top = useMemo(() => {
