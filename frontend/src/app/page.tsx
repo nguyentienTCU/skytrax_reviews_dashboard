@@ -13,8 +13,11 @@ import AirlineSelectorClient from "@/components/AirlineSelector";
 
 type SearchParams = { airline?: string | string[] };
 
-
-export default async function Home({ searchParams }: { searchParams: Promise<SearchParams> }) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
   const defaultSlug = "british-airways";
   const { airline } = await searchParams;
   const currentSlug =
@@ -24,20 +27,39 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
     <div className="dashboard-container bg-white dark:bg-gray-900">
       <Header />
 
-      {/* Info pill (fetches last refresh via SWR) */}
-      <DashboardInfo airlineSlug={currentSlug} />
+      <section id="overview" className="scroll-mt-24">
+        <DashboardInfo airlineSlug={currentSlug} />
+      </section>
 
-      {/* Selector now fetches airlines via API internally; just needs currentSlug */}
       <AirlineSelectorClient airlineSlug={currentSlug} />
 
-      {/* All sections fetch their own data via SWR using the slug */}
-      <DataSummary airlineSlug={currentSlug} />
-      <MonthlyMetrics airlineSlug={currentSlug} />
-      <TimeAnalysis airlineSlug={currentSlug} />
-      <AircraftAnalysis airlineSlug={currentSlug} />
-      <RouteAnalysis airlineSlug={currentSlug} />
-      <CustomerAnalysis airlineSlug={currentSlug} />
-      <ReviewTextAnalysis airlineSlug={currentSlug} />
+      <section id="data-summary" className="scroll-mt-24">
+        <DataSummary airlineSlug={currentSlug} />
+      </section>
+
+      <section id="monthly-metrics" className="scroll-mt-24">
+        <MonthlyMetrics airlineSlug={currentSlug} />
+      </section>
+
+      <section id="time-analysis" className="scroll-mt-24">
+        <TimeAnalysis airlineSlug={currentSlug} />
+      </section>
+
+      <section id="aircraft-analysis" className="scroll-mt-24">
+        <AircraftAnalysis airlineSlug={currentSlug} />
+      </section>
+
+      <section id="route-analysis" className="scroll-mt-24">
+        <RouteAnalysis airlineSlug={currentSlug} />
+      </section>
+
+      <section id="customer-analysis" className="scroll-mt-24">
+        <CustomerAnalysis airlineSlug={currentSlug} />
+      </section>
+
+      <section id="review-text-analysis" className="scroll-mt-24">
+        <ReviewTextAnalysis airlineSlug={currentSlug} />
+      </section>
 
       <Footer />
     </div>
